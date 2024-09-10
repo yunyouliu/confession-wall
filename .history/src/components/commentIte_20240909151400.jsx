@@ -5,7 +5,10 @@ const Commentitem = () => {
   const [activeTab, setActiveTab] = useState(0);
   return (
     <div className="mt-4">
-     
+     <Tabs>
+      <Tabs.Tab title="最新评论" key="0"/>
+      <Tabs.Tab title="最早评论" key="1"/>
+     </Tabs>
     </div>
   );
 };
