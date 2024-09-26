@@ -1,7 +1,8 @@
-import { React, useState } from "react";
-import { CapsuleTabs  } from "antd-mobile";
+import { React, useState, useEffect } from "react";
+import { CapsuleTabs } from "antd-mobile";
 import CommentItem from "./CommentItem";
-
+import axios from "axios";
+import PropTypes from "prop-types";
 const Data = [
   {
     id: 1,
@@ -73,24 +74,43 @@ const Data = [
   },
 ];
 
-const Comment = () => {
+const Comment = ({ id }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const { data } = await axios(`/wall/commentform/list/tree/${id}`);
+        setData(data.data);
+        setActiveTab(data.data);
+      };
+
+      fetchData();
+    } catch (error) {
+      console.error("数据获取失败:", error.message);
+    }
+  }, []);
+
   return (
     <div>
       <div className="mt-4 bg-white rounded-lg w-[90%]  mx-auto">
-        <CapsuleTabs >
+        <CapsuleTabs>
           <CapsuleTabs.Tab title="最新评论" key="0" />
           <CapsuleTabs.Tab title="最早评论" key="1" />
         </CapsuleTabs>
       </div>
 
       <div className="p-4">
-        {Data.map((iten, index) => {
-          return <CommentItem key={index} child={iten.child} {...iten} />;
+        {data.map((iten, index) => {
+          return <CommentItem key={index} child={iten.children} {...iten} />;
         })}
       </div>
     </div>
   );
 };
 
+// 属性验证
+Comment.propTypes = {
+  id: PropTypes.number.isRequired,
+};
 export default Comment;

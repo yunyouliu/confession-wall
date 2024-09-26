@@ -70,12 +70,24 @@ const Footer = () => {
           >
             头像
           </List.Item>
-          <List.Item extra={<>用户2054310</>}>昵称</List.Item>
-          <List.Item extra="男">性别</List.Item>
-          <List.Item extra="189807350">手机号</List.Item>
-          <List.Item extra="暂未认证，去认证">身份认证</List.Item>
-          <List.Item extra="2054310">ID</List.Item>
-          <List.Item extra="0">点券</List.Item>
+          <List.Item clickable extra={<>用户2054310</>}>
+            昵称
+          </List.Item>
+          <List.Item clickable extra="男">
+            性别
+          </List.Item>
+          <List.Item clickable extra="189807350">
+            手机号
+          </List.Item>
+          <List.Item clickable extra="暂未认证，去认证">
+            身份认证
+          </List.Item>
+          <List.Item clickable extra="2054310">
+            ID
+          </List.Item>
+          <List.Item clickable extra="0">
+            点券
+          </List.Item>
         </List>
       </Popup>
     </div>

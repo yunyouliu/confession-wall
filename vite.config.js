@@ -9,6 +9,14 @@ export default defineConfig({
   // 配置host 0.0.0.0
   server: {
     host: "0.0.0.0",
+    // 跨域
+    // proxy: {
+    //   "/api": {
+    //     target: "http://localhost:1112",
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, ""),
+    //   },
+    // },
   },
   css: {
     postcss: {
@@ -20,7 +28,7 @@ export default defineConfig({
       "@/components": path.resolve(
         fileURLToPath(new URL("./src/components", import.meta.url))
       ),
-      "@/": path.resolve(fileURLToPath(new URL("./src", import.meta.url))),
+      "@": path.resolve(fileURLToPath(new URL("./src", import.meta.url))),
     },
   },
   base: "./",

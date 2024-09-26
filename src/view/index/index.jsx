@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useCallback } from "react";
 import NavBar from "@/components/index/NavBar";
 import TabBar from "@/components/index/TabBar";
 import Search from "@/components/index/search";
@@ -9,165 +9,60 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../App.css";
 
-const Data = [
-  {
-    id: 1,
-    avatarUrl:
-      "https://img.qiqi.pro/mirror/gravatar/avatar/a34fc3a2030b49d9ef5b10bf824e5ff4?s=40&d=retro&f=y",
-    name: "匿名",
-    sex: "female",
-    section: "吐槽",
-    time: "5分钟前",
-    like: 2,
-    views: 200,
-    comments: 4,
-    content: {
-      text: "拒绝emo，请你看海边的日落和晚霞🎉[看]",
-      img: [
-        "https://img.qiqi.pro/x/cm0s8as291jrgz1tc5w2fb6qf.jpeg?_s=2196x3904",
-        "https://img.qiqi.pro/x/cm0s8ap8y1jrbz1tcbebn5glm.jpeg?_s=2256x4009",
-        "https://img.qiqi.pro/x/cm0s8aqkl1jrdz1tcbbxh6db2.jpeg?_s=2311x4110",
-        "https://img.qiqi.pro/x/cm0s8ahdi1jqzz1tcek208nsd.jpeg?_s=2311x4110",
-        "https://img.qiqi.pro/x/cm0s8alav1jr5z1tcc4r35vlp.jpeg?_s=2354x4186",
-        "https://img.qiqi.pro/x/cm0s8aios1jr1z1tc8o1z8apa.jpeg?_s=2433x4327",
-        "https://img.qiqi.pro/x/cm0s8ak561jr3z1tc84pg1fsk.jpeg?_s=2433x4327",
-        "https://img.qiqi.pro/x/cm0s8amiz1jr7z1tc70vvhbo0.jpeg?_s=2495x4438",
-        "https://img.qiqi.pro/x/cm0s8amiz1jr7z1tc70vvhbo0.jpeg?_s=2495x4438",
-      ],
-    },
-  },
-  {
-    id: 2,
-    avatarUrl:
-      "https://img.qiqi.pro/mirror/gravatar/avatar/a34fc3a2030b49d9ef5b10bf824e5ff4?s=40&d=retro&f=y",
-    name: "匿名",
-    sex: "female",
-    section: "说说",
-    time: "2小时前",
-    like: 2,
-    comments: 4,
-    views: 1200,
-    content: {
-      text: "拒绝emo，请你看海边的日落和晚霞🎉[看]",
-      img: [
-        "https://img.qiqi.pro/x/cm0s8as291jrgz1tc5w2fb6qf.jpeg?_s=2196x3904",
-        "https://img.qiqi.pro/x/cm0s8ap8y1jrbz1tcbebn5glm.jpeg?_s=2256x4009",
-      ],
-    },
-  },
-  {
-    id: 3,
-    avatarUrl:
-      "https://img.qiqi.pro/mirror/gravatar/avatar/a34fc3a2030b49d9ef5b10bf824e5ff4?s=40&d=retro&f=y",
-    name: "匿名",
-    sex: "male",
-    section: "推广",
-    time: "3小时前",
-    like: 16,
-    comments: 18,
-    views: 120,
-    content: {
-      text: "拒绝emo，请你看海边的日落和晚霞🎉[看]",
-      img: [
-        "https://img.qiqi.pro/x/cm0s8as291jrgz1tc5w2fb6qf.jpeg?_s=2196x3904",
-      ],
-    },
-  },
-  {
-    id: 4,
-    avatarUrl:
-      "https://img.qiqi.pro/mirror/gravatar/avatar/a34fc3a2030b49d9ef5b10bf824e5ff4?s=40&d=retro&f=y",
-    name: "匿名",
-    sex: "female",
-    section: "吐槽",
-    time: "5分钟前",
-    like: 2,
-    views: 200,
-    comments: 4,
-    content: {
-      text: "拒绝emo，请你看海边的日落和晚霞🎉[看]",
-      img: [
-        "https://img.qiqi.pro/x/cm0s8as291jrgz1tc5w2fb6qf.jpeg?_s=2196x3904",
-        "https://img.qiqi.pro/x/cm0s8ap8y1jrbz1tcbebn5glm.jpeg?_s=2256x4009",
-        "https://img.qiqi.pro/x/cm0s8aqkl1jrdz1tcbbxh6db2.jpeg?_s=2311x4110",
-        "https://img.qiqi.pro/x/cm0s8ahdi1jqzz1tcek208nsd.jpeg?_s=2311x4110",
-        "https://img.qiqi.pro/x/cm0s8alav1jr5z1tcc4r35vlp.jpeg?_s=2354x4186",
-        "https://img.qiqi.pro/x/cm0s8aios1jr1z1tc8o1z8apa.jpeg?_s=2433x4327",
-        "https://img.qiqi.pro/x/cm0s8ak561jr3z1tc84pg1fsk.jpeg?_s=2433x4327",
-        "https://img.qiqi.pro/x/cm0s8amiz1jr7z1tc70vvhbo0.jpeg?_s=2495x4438",
-        "https://img.qiqi.pro/x/cm0s8amiz1jr7z1tc70vvhbo0.jpeg?_s=2495x4438",
-      ],
-    },
-  },
-  {
-    id: 5,
-    avatarUrl:
-      "https://img.qiqi.pro/mirror/gravatar/avatar/a34fc3a2030b49d9ef5b10bf824e5ff4?s=40&d=retro&f=y",
-    name: "匿名",
-    sex: "female",
-    section: "说说",
-    time: "2小时前",
-    like: 2,
-    comments: 4,
-    views: 1200,
-    content: {
-      text: "拒绝emo，请你看海边的日落和晚霞🎉[看]",
-      img: [
-        "https://img.qiqi.pro/x/cm0s8as291jrgz1tc5w2fb6qf.jpeg?_s=2196x3904",
-        "https://img.qiqi.pro/x/cm0s8ap8y1jrbz1tcbebn5glm.jpeg?_s=2256x4009",
-      ],
-    },
-  },
-  {
-    id: 6,
-    avatarUrl:
-      "https://img.qiqi.pro/mirror/gravatar/avatar/a34fc3a2030b49d9ef5b10bf824e5ff4?s=40&d=retro&f=y",
-    name: "匿名",
-    sex: "male",
-    section: "推广",
-    time: "3小时前",
-    like: 16,
-    comments: 18,
-    views: 120,
-    content: {
-      text: "拒绝emo，请你看海边的日落和晚霞🎉[看]",
-      img: [
-        "https://img.qiqi.pro/x/cm0s8as291jrgz1tc5w2fb6qf.jpeg?_s=2196x3904",
-      ],
-    },
-  },
-  
-];
-
 const Index = () => {
-  const [data, setData] = useState();
-  const [hasMore, setHasMore] = useState(true);
+  const [data, setData] = useState([]); // 初始数据为空数组
+  const [hasMore, setHasMore] = useState(true); // 是否还有更多数据
+  const [page, setPage] = useState(1); // 当前页码
+  const [pageSize] = useState(10); // 每页加载数量
+  const [loading, setLoading] = useState(false); // 是否正在加载
   const navigate = useNavigate();
 
+  // 加载更多数据的函数
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return; // 如果正在加载或没有更多数据则停止请求
+
+    setLoading(true); // 开始加载数据
+    try {
+      const response = await axios("/wall/essay/post/list", {
+        params: { page, pageSize },
+      });
+      const newData = response.data.data || [];
+
+      // 如果加载的数据少于 `pageSize`，说明没有更多数据
+      if (newData.length < pageSize) {
+        setHasMore(false); // 停止加载更多
+      }
+
+      // 避免重复添加相同的数据
+      setData((prevData) => {
+        const uniqueData = newData.filter(
+          (newItem) => !prevData.some((prevItem) => prevItem.id === newItem.id)
+        );
+        return [...prevData, ...uniqueData];
+      });
+
+      setPage((prevPage) => prevPage + 1); // 更新页码
+    } catch (error) {
+      console.error("加载数据失败：", error);
+      setHasMore(false); // 发生错误时停止加载
+    } finally {
+      setLoading(false); // 数据加载完成
+    }
+  }, [hasMore, loading, page, pageSize]);
+
+  // 初始加载第一页数据
   useEffect(() => {
-   
-    // const fechData = async () => {
-    //   try {
-    //     // 分页查询
-    //     const res = await axios("/api/v1/post/list", {
-    //       params: { page: 1, pageSize: 10 },
-    //     });
-    //     console.log(res);
-    //     setData(res.data.data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-  }, []);
+    loadMore(); // 加载第一页数据
+  }, [loadMore]); // 确保 useEffect 只在 loadMore 改变时执行
 
   return (
     <div className="h-full p-2">
-      <div className=" bg-gradient-to-r from-pink-200 via-purple-200">
+      <div className="bg-gradient-to-r from-pink-200 via-purple-200">
         <NavBar />
         <TabBar />
         <Search />
-        {Data.map((item) => {
-          return (
+        {data.length ? (
+          data.map((item) => (
             <CardItem
               userId={item.id}
               key={item.id}
@@ -176,15 +71,17 @@ const Index = () => {
               sex={item.sex}
               time={item.time}
               content={item.content}
-              likes={item.like}
+              likes={item.likes}
               views={item.views}
               comments={item.comments}
               section={item.section}
             />
-          );
-        })}
+          ))
+        ) : (
+          <p>Loading...</p> // 数据加载时的占位符
+        )}
         <Footer />
-        <InfiniteScroll />
+        <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
       </div>
     </div>
   );

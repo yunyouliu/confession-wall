@@ -21,7 +21,7 @@ const CardItem = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleCardClick = () => {
+  const handleCardClick = (id) => {
     // 使用 state 传递参数
     navigate("/detail", { state: { userId } });
   };
@@ -37,7 +37,7 @@ const CardItem = ({
           section={section}
           content={content}
         />
-        <CardContent text={content} id={userId|0} />
+        <CardContent text={content} id={userId|0} onclick={handleCardClick} />
         <CardFooter likes={likes} views={views} comments={comments} id={userId}/>
       </Card>
     </div>
@@ -53,7 +53,7 @@ CardItem.propTypes = {
   content: PropTypes.any.isRequired,
   likes: PropTypes.number.isRequired,
   comments: PropTypes.number.isRequired,
-  views: PropTypes.number.isRequired,
+  views: PropTypes.number,
   section: PropTypes.string.isRequired,
   userId: PropTypes.number, // 新增用户 ID 的验证
 };

@@ -22,7 +22,7 @@ export default function Foot({ sex, name, avatarUrl }) {
             {checked ? "已匿名" : "可匿名"}
           </span>
         </Checkbox>
-        <Button color="success" className="rounded-3xl h-8 ml-2 px-4">
+        <Button color="success" className="rounded-3xl h-8 ml-2 px-4" >
           评论
         </Button>
       </div>

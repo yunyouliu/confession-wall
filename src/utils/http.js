@@ -1,7 +1,9 @@
 import axios from "axios";
 
 //   配置 axios 的 baseURL
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "http://localhost:1112";
+
+axios.defaults.withCredentials=true
 //   超时时间
 axios.defaults.timeout = 5000;
 
@@ -28,7 +30,6 @@ axios.interceptors.request.use(
   },
   function (error) {
     // 获取 Redux 的 dispatch
-
     return Promise.reject(error);
   }
 );

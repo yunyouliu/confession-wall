@@ -5,9 +5,14 @@ import "./index.css";
 import "./assets/iconfont";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import router from "./router";
+import "./utils/http";
+import { Provider } from "react-redux";
+import {store} from "././redux/store";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
+  <Provider store={store}>
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
+  </Provider>
 );

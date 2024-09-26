@@ -26,6 +26,10 @@ const CommentItem = ({
   // 默认展示一条子评论
   const visibleChildren = showAllChildren ? child : child.slice(0, 1);
 
+const handleClick = (id) => {
+  setVisble(!visble);
+};
+
   return (
     <div>
       <div className="mt-3">
@@ -44,7 +48,7 @@ const CommentItem = ({
               setVisble(true);
             }}
           >
-            <CardContent text={content} id={userId || 0} />
+            <CardContent text={content} id={userId || 0}  />
           </div>
           <CardFooter
             likes={likes}
@@ -66,8 +70,8 @@ const CommentItem = ({
                   time={item.time}
                   content={item.content}
                   display={item.display}
-                  toname={item.toname}
-                  tosex={item.tosex}
+                  toname={item.toName}
+                  tosex={item.toSex}
                 />
                 <div
                   onClick={() => {
@@ -75,7 +79,7 @@ const CommentItem = ({
                     setVisble(true);
                   }}
                 >
-                  <CardContent text={item.content} id={item.userId || 0} />
+                  <CardContent text={item.content} id={item.userId || 0} onclick={() => handleClick(item.id)} />
                 </div>
                 <CardFooter
                   likes={item.likes}

@@ -1,21 +1,17 @@
+// src/CardContent.jsx
+
 import { React, useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import { ImageViewer, Button } from "antd-mobile";
+import { ImageViewer, Image } from "antd-mobile";
 import jsonData from "../../assets/emoji.json"; // 引入 emoji 数据
 import tabEmoji from "../../assets/tabEmoji.json"; // 引入 tabEmoji 数据
 
-const CardContent = ({ text, id }) => {
-  const navigate = useNavigate();
+const CardContent = ({ text, id, onclick }) => {
   const [index, setIndex] = useState(0); // 默认从第0张开始
   const [isExpanded, setIsExpanded] = useState(false); // 控制文本展开/收起
   const [isOverflowing, setIsOverflowing] = useState(false); // 是否内容溢出
 
   const mergedEmojiData = [...jsonData, ...tabEmoji];
-
-  const handleClick = (id) => {
-    navigate("/detail", { state: { id } });
-  };
 
   const getFlexClasses = (imgLength) => {
     switch (imgLength) {
@@ -30,12 +26,12 @@ const CardContent = ({ text, id }) => {
     }
   };
 
- const showImages = () => {
-  ImageViewer.Multi.show({
-    images: text.img,
-    defaultIndex: index,
-  });
-};
+  const showImages = (index) => {
+    ImageViewer.Multi.show({
+      images: text.img,
+      defaultIndex: index,
+    });
+  };
 
   const parseTextWithEmoji = (contentText) => {
     return contentText.split(/(\[.*?\])/).map((part, idx) => {
@@ -74,32 +70,36 @@ const CardContent = ({ text, id }) => {
     }
   }, []);
 
+  if (!text || !text.text) {
+    return null;
+  }
+
   return (
-    <div className="text-left mt-2  indent-[20px] text-white text-base">
+    <div className="text-left mt-2 indent-[20px] text-white text-base">
       <div
         ref={contentRef}
         className={`overflow-hidden transition-all ${
-          isExpanded ? "max-h-none" : "max-h-[187px]" // 100px 高度限制
+          isExpanded ? "max-h-none" : "max-h-[187px]"
         }`}
+        onClick={() => onclick(id)} // 由外部传递的 onclick 控制点击事件
       >
-        <p onClick={() => handleClick(id)}>{parseTextWithEmoji(text.text)}</p>
+        {parseTextWithEmoji(text.text)}
       </div>
 
-      {/* 如果内容溢出，显示展开/收起按钮 */}
       {isOverflowing && (
         <div
-          className="text-white border-dashed text-center w-20 text-sm
-         indent-0 ml-2  border-2 border-white mt-2 "
+          className="text-white border-dashed text-center w-20 text-sm indent-0 ml-2 border-2 border-white mt-2"
           onClick={handleToggleExpand}
         >
           {isExpanded ? "收起内容↑" : "展开内容↓"}
         </div>
       )}
 
-      {text && text.img && text.img.length > 0 && (
+      {text.img && text.img.length > 0 && (
         <div className={`mt-2 p-2 ${getFlexClasses(text.img.length)}`}>
           {text.img.map((item, idx) => (
-            <img
+            <Image
+              lazy
               key={idx}
               src={item}
               alt="图片"
@@ -112,7 +112,10 @@ const CardContent = ({ text, id }) => {
                   ? "w-[32%] aspect-[4/3]"
                   : "w-[32%] aspect-[4/3]"
               }`}
-              onClick={() => showImages(idx)}
+              onClick={(event) => {
+                event.stopPropagation(); // 阻止事件冒泡
+                showImages(idx);
+              }}
             />
           ))}
         </div>
@@ -124,6 +127,7 @@ const CardContent = ({ text, id }) => {
 CardContent.propTypes = {
   text: PropTypes.any.isRequired,
   id: PropTypes.number.isRequired,
+  onclick: PropTypes.func.isRequired, // 确保 onclick 是必需的
 };
 
 export default CardContent;

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Avatar, Popup, Grid, Button } from "antd-mobile";
 import SexIcon from "./SexIcon";
 import SvgIcon from "@/components/SvgIcon";
+
 const iconMap = {
   "icon-a-fenxiang2": "分享海报",
   "icon-wobaomingde03": "申请加精",
@@ -15,7 +16,7 @@ const CardHeader = ({ avatarUrl, name, sex, time, section, content }) => {
   const [visible, setVisible] = useState(false);
   return (
     <div className="text-center flex items-center no-select">
-      <Avatar className="w-[20px] h-[20px] mr-1 rounded-full" src={avatarUrl} />
+      <Avatar className="w-[20px] h-[20px] mr-1 rounded-full" lazy src={avatarUrl} />
       {name}&nbsp; <SexIcon sex={sex} />
       |&nbsp;{section}
       <div
