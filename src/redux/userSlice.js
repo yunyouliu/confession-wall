@@ -1,26 +1,17 @@
 // redux/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
-// 从 localStorage 中读取初始状态
-const loadUserFromLocalStorage = () => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    const { username, roleId, rights, roleState } = JSON.parse(token);
-    return { username, roleId, rights, roleState };
-  }
-  return {
+const userSlice = createSlice({
+  // 命名空间
+  name: "user",
+  // 初始状态
+  initialState: {
     username: "",
     roleId: null,
     rights: [],
     roleState: false,
-  };
-};
-
-const initialState = loadUserFromLocalStorage();
-
-const userSlice = createSlice({
-  name: "user",
-  initialState,
+  },
+  // reducers
   reducers: {
     setUser(state, action) {
       const { username, roleId, rights, roleState } = action.payload;

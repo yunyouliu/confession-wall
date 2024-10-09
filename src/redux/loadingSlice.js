@@ -15,7 +15,8 @@ const isloadingSlice = createSlice({
   },
 });
 
-// 导出 changeLoading 动作创建函数，以便在应用中使用
+// 导出 changeLoading 动作创建函数，以便在应用中使用  按需导出
 export const { changeloading } = isloadingSlice.actions;
 
+// 默认导出 slice 的 reducer 函数
 export default isloadingSlice.reducer;

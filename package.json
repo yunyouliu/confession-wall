@@ -16,6 +16,7 @@
     "antd-mobile": "^5.37.1",
     "antd-mobile-icons": "^0.3.0",
     "axios": "^1.7.7",
+    "crypto-js": "^4.2.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "prop-types": "^15.8.1",

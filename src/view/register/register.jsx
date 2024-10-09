@@ -3,6 +3,7 @@ import { Input, Button, Toast, List, NavBar } from "antd-mobile";
 import { MailOutline, LockOutline } from "antd-mobile-icons"; // 引入图标
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import MD5 from "crypto-js/md5";
 
 // "https://img.zcool.cn/community/011a765912c1dbb5b3086ed4da6cab.jpg@1280w_1l_2o_100sh.jpg"
 const Register = () => {
@@ -73,7 +74,6 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       Toast.show({
-        icon: "fail",
         content: "两次输入的密码不一致!",
       });
       return;
@@ -83,14 +83,13 @@ const Register = () => {
     axios
       .post("/wall/register", {
         email,
-        password,
+        password: MD5(password + "😢").toString(),
         emailCode: code,
       })
       .then((res) => {
         console.log(res.data);
         if (res.data.code === 200) {
           Toast.show({
-            icon: "success",
             content: "注册成功",
           });
           setTimeout(() => {
@@ -98,7 +97,6 @@ const Register = () => {
           }, 2000);
         } else {
           Toast.show({
-            icon: "fail",
             content: res.data.msg,
           });
         }
@@ -140,7 +138,7 @@ const Register = () => {
                 prefix={<MailOutline />} // 验证码输入框左侧图标
               />
               <Button
-                className="ml-2 bg-purple-500 text-white"
+                className="ml-2 bg-purple-500 text-white h-9"
                 onClick={sendVerificationCode}
                 disabled={isSending || countdown > 0}
               >
