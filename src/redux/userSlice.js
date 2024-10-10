@@ -7,24 +7,29 @@ const userSlice = createSlice({
   // 初始状态
   initialState: {
     username: "",
-    roleId: null,
-    rights: [],
-    roleState: false,
+    avatarUrl: "",
+    email: "",
+    id: null,
+    index: null,
+    sex: null,
   },
   // reducers
   reducers: {
     setUser(state, action) {
-      const { username, roleId, rights, roleState } = action.payload;
-      state.username = username;
-      state.roleId = roleId;
-      state.rights = rights;
-      state.roleState = roleState;
+      state.username = action.payload.username;
+      state.avatarUrl = action.payload.avatarUrl;
+      state.email = action.payload.email;
+      state.id = action.payload.id;
+      state.index = action.payload.index;
+      state.sex = action.payload.sex;
     },
     clearUser(state) {
       state.username = "";
-      state.roleId = null;
-      state.rights = [];
-      state.roleState = false;
+      state.avatarUrl = "";
+      state.email = "";
+      state.id = null;
+      state.index = null;
+      state.sex = null;
     },
   },
 });

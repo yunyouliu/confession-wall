@@ -22,6 +22,7 @@ const CardItem = ({
   const navigate = useNavigate();
 
   const handleCardClick = (id) => {
+    // console.log(userId)
     // 使用 state 传递参数
     navigate("/detail", { state: { userId } });
   };
@@ -37,8 +38,13 @@ const CardItem = ({
           section={section}
           content={content}
         />
-        <CardContent text={content} id={userId|0} onclick={handleCardClick} />
-        <CardFooter likes={likes} views={views} comments={comments} id={userId}/>
+        <CardContent text={content} id={userId | 0} onclick={handleCardClick} />
+        <CardFooter
+          likes={likes}
+          views={views}
+          comments={comments}
+          id={userId}
+        />
       </Card>
     </div>
   );

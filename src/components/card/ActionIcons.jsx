@@ -9,7 +9,7 @@ const ActionIcons = ({ likes, comments, views, id }) => {
 
   const handleClick = (id) => {
     // console.log("点击了卡片内容");
-    navigate("/detail", { state: { id } });
+    navigate("/detail", { state: { userId:id } });
   };
   const handleLikeClick = () => {
     setIsLiked(!isLiked); // 切换点赞状态
@@ -34,7 +34,7 @@ const ActionIcons = ({ likes, comments, views, id }) => {
       </div>
 
       {/* 评论图标和数量 */}
-      {comments && (
+      {comments!==undefined && (
         <div className="flex items-center" onClick={() => handleClick(id)}>
           <SvgIcon iconName="liaotian" className="icon" />
           <span className="ml-1">{comments}</span>

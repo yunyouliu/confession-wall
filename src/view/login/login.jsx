@@ -21,8 +21,8 @@ const images = [
 ];
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("2876177343@qq.com");
+  const [password, setPassword] = useState("123456");
   const [code, setCode] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [visible, setVisible] = useState(false);
@@ -36,6 +36,7 @@ const LoginPage = () => {
   const handleChange = useCallback((captcha) => {
     // console.log("captcha:", captcha);
     setCaptcha(captcha);
+    setCode(captcha);
   }, []);
 
   const handleLogin = async () => {
@@ -52,12 +53,12 @@ const LoginPage = () => {
     }
 
     try {
-      const res = await axios.post("/login", {
-        username,
+      const res = await axios.post("/wall/login", {
+        email: username,
         password: MD5(password + "😢").toString(),
       });
       if (res.data.code === 200) {
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("token", res.data.data.token);
         navigate("/index");
       } else {
         Toast.show({ content: res.data.msg });

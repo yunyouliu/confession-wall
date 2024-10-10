@@ -8,6 +8,7 @@ import { InfiniteScroll } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../App.css";
+import { Toast } from "antd-mobile";
 
 const Index = () => {
   const [data, setData] = useState([]); // 初始数据为空数组
@@ -44,6 +45,7 @@ const Index = () => {
       setPage((prevPage) => prevPage + 1); // 更新页码
     } catch (error) {
       console.error("加载数据失败：", error);
+      Toast.show({ content: "加载数据失败" + error.message });
       setHasMore(false); // 发生错误时停止加载
     } finally {
       setLoading(false); // 数据加载完成

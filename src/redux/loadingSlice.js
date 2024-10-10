@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const isloadingSlice = createSlice({
   name: "isloading",
   initialState: {
-    isloading: false, // 初始时，loading 状态为 false，表示没有加载中
+    isloading: true, // 初始时，loading 状态为 false，表示没有加载中
   },
   reducers: {
     // 定义 slice 中的 reducer 函数

@@ -1,7 +1,10 @@
 import { React, useState } from "react";
 import { Tabs, Button, Popup, Grid, AutoCenter, Dropdown } from "antd-mobile";
 import SvgIcon from "../SvgIcon";
-const tab = [
+import { useSelector, useDispatch } from "react-redux";
+import { setTab, setSection } from "@/redux/tabSlice";
+
+const tabs = [
   {
     title: "全部",
     key: "1",
@@ -47,20 +50,24 @@ const nav = [
   { title: "热榜", key: 7 },
 ];
 const TabBar = () => {
-  const [visible1, setVisible1] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [activKey, setactivKey] = useState(1);
+  const section = useSelector((state) => state.tab.section);
+  const tab = useSelector((state) => state.tab.tab);
+  const dispatch = useDispatch();
+
   return (
     <>
       <div className="pl-2 pr-0.5  mt-3 justify-between">
         <Tabs
           defaultActiveKey="1"
-          activeKey={activKey}
+          activeKey={section}
           onChange={(value) => {
-            setactivKey(value);
+            dispatch(setSection(value));
           }}
           className=" bg-[#fde5e9] font-mono decoration-8 leading-3 overflow-hidden  rounded-md"
         >
-          {tab.map((item) => {
+          {tabs.map((item) => {
             return (
               <Tabs.Tab
                 className="text-sm w-16"
@@ -74,7 +81,14 @@ const TabBar = () => {
           <Tabs.Tab className="text-sm w-10" title="" key="13" />
         </Tabs>
 
-        <Tabs className=" bg-[#fde5e9] font-mono  overflow-hidden mt-4 w-[180]  rounded-md">
+        <Tabs
+          defaultActiveKey="1"
+          activeKey={tab}
+          onChange={(value) => {
+            dispatch(setTab(value));
+          }}
+          className=" bg-[#fde5e9] font-mono  overflow-hidden mt-4 w-[180]  rounded-md"
+        >
           {nav.map((item) => {
             return (
               <Tabs.Tab
@@ -99,19 +113,19 @@ const TabBar = () => {
         fill="solid"
         className="absolute top-[192px] right-[10px]  h-[39px]"
         onClick={() => {
-          setVisible1(true);
+          setVisible(true);
         }}
       >
-        <SvgIcon iconName="gengduo1"/>
+        <SvgIcon iconName="gengduo1" />
       </Button>
 
       <Popup
-        visible={visible1}
+        visible={visible}
         onMaskClick={() => {
-          setVisible1(false);
+          setVisible(false);
         }}
         onClose={() => {
-          setVisible1(false);
+          setVisible(false);
         }}
         position="top"
         bodyStyle={{
@@ -121,13 +135,13 @@ const TabBar = () => {
         }}
       >
         <Grid columns={3} gap={8} className="p-4">
-          {tab.map((item) => {
+          {tabs.map((item) => {
             return (
               <Grid.Item
                 key={item.key}
                 onClick={() => {
                   setactivKey(item.key);
-                  setVisible1(false);
+                  setVisible(false);
                 }}
               >
                 <div

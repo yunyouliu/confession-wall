@@ -4,7 +4,7 @@ import { React, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import EmojiSelector from "@/components/detail/emojiSelector";
 import Footer from "@/components/detail/footer";
-import axios from "axios";
+import axios from "@/utils/http";
 import { Image, SpinLoading } from "antd-mobile"; // 引入 SpinLoading 组件
 
 const Detail = () => {
@@ -12,8 +12,7 @@ const Detail = () => {
   const [loading, setLoading] = useState(true); // 增加加载状态
   const location = useLocation(); // 获取传递的 state 参数
   const state = location.state;
-  const id=state.id|1;
-
+  const id = state.userId;
   const handleCommentSubmit = (comment) => {
     console.log("发送的评论:", comment);
     // 在此可以处理评论的提交，比如通过 API 提交到服务器
