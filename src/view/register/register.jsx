@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import MD5 from "crypto-js/md5";
 
-// "https://img.zcool.cn/community/011a765912c1dbb5b3086ed4da6cab.jpg@1280w_1l_2o_100sh.jpg"
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +17,6 @@ const Register = () => {
     if (!email) {
       Toast.show({
         position: "center",
-        icon: "fail",
         content: "请输入邮箱!",
       });
       return;
@@ -29,7 +27,6 @@ const Register = () => {
     if (!emailRegex.test(email)) {
       Toast.show({
         position: "center",
-        icon: "fail",
         content: "请输入正确的邮箱格式!",
       });
       return;
@@ -107,7 +104,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center select-none">
       <NavBar
         className="bg-purple-700 w-full p-0 h-12 text-white"
         onBack={back}

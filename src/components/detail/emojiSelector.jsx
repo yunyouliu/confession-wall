@@ -38,6 +38,7 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
   const handPhoto = () => {
     // 调用相机
   };
+  
   const upload=async(file)=>{
     const stsResponse = await axios("/oss/policy");
     console.log("STS Response:", stsResponse.data);
@@ -147,6 +148,7 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
             onChange={(files) => {
               setVisible(false);
               setFileList(files);
+              console.log(files)
             }}
             upload={uploadToOss}
           >

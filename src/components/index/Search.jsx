@@ -1,24 +1,26 @@
 import { React, useState } from "react";
 import { Image, SearchBar, Toast } from "antd-mobile";
 import { RightOutline } from "antd-mobile-icons";
-const Search = () => {
-  const [value, setvalue] = useState("");
+import PropTypes from "prop-types";
+const Search = ({ query, change }) => {
+  const setValue = (value) => {
+    change(value);
+  };
   return (
     <div>
       <SearchBar
         placeholder="想搜点什么呢~"
-        value={value}
-        onChange={(val) => {
-          setvalue(val);
+        value={query}
+        onChange={(value) => {
+          setValue(value);
         }}
         onSearch={() => {
           Toast.show({
-            content: `你搜索了：${value}`,
+            content: `你搜索了：${query}`,
             position: "center",
           });
         }}
         className="ml-2 mt-2"
-        qw
       />
       {/* <Buttonw
         shape="rounded"
@@ -41,6 +43,11 @@ const Search = () => {
       </div>
     </div>
   );
+};
+
+Search.propTypes = {
+  query: PropTypes.string.isRequired,
+  change: PropTypes.func.isRequired,
 };
 
 export default Search;

@@ -27,7 +27,7 @@ axios.interceptors.request.use(
     const { dispatch } = store;
 
     // 在发送请求之前，开启 loading
-    dispatch(changeloading(true));
+    // dispatch(changeloading(true));
 
     // 在发送请求之前,配置jwt请求头
     if (localStorage.getItem("token")) {
@@ -41,7 +41,7 @@ axios.interceptors.request.use(
     // 获取 Redux 的 dispatch
     const { dispatch } = store;
     // 如果请求出错，关闭 loading
-    dispatch(changeloading(false));
+    // dispatch(changeloading(false));
     return Promise.reject(error);
   }
 );
@@ -52,14 +52,14 @@ axios.interceptors.response.use(
     // 获取 Redux 的 dispatch
     const { dispatch } = store;
     // 在接收到响应后，关闭 loading
-    dispatch(changeloading(false));
+    // dispatch(changeloading(false));
     return response;
   },
   function (error) {
     // 获取 Redux 的 dispatch
     const { dispatch } = store;
     // 如果响应出错，关闭 loading
-    dispatch(changeloading(false));
+    // dispatch(changeloading(false));
 
     return Promise.reject(error);
   }

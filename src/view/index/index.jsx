@@ -9,14 +9,18 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../App.css";
 import { Toast } from "antd-mobile";
+import { useSelector } from "react-redux";
 
 const Index = () => {
   const [data, setData] = useState([]); // 初始数据为空数组
   const [hasMore, setHasMore] = useState(true); // 是否还有更多数据
   const [page, setPage] = useState(1); // 当前页码
   const [pageSize] = useState(10); // 每页加载数量
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false); // 是否正在加载
   const navigate = useNavigate();
+  const { section, tab } = useSelector((state) => state.tab);
+  const { id } = useSelector((state) => state.user);
 
   // 加载更多数据的函数
   const loadMore = useCallback(async () => {
@@ -25,7 +29,7 @@ const Index = () => {
     setLoading(true); // 开始加载数据
     try {
       const response = await axios("/wall/essay/post/list", {
-        params: { page, pageSize },
+        params: { page, pageSize, section, tab, id, query },
       });
       const newData = response.data.data || [];
 
@@ -41,7 +45,7 @@ const Index = () => {
         );
         return [...prevData, ...uniqueData];
       });
-
+      9;
       setPage((prevPage) => prevPage + 1); // 更新页码
     } catch (error) {
       console.error("加载数据失败：", error);
@@ -50,19 +54,30 @@ const Index = () => {
     } finally {
       setLoading(false); // 数据加载完成
     }
-  }, [hasMore, loading, page, pageSize]);
+  }, [hasMore, loading, page, pageSize, id, query, section, tab]);
 
-  // 初始加载第一页数据
+  // // 初始加载第一页数据
+  // useEffect(() => {
+  //   loadMore(); // 加载第一页数据
+  // }, [loadMore]); // 确保 useEffect 只在 loadMore 改变时执行
+
   useEffect(() => {
-    loadMore(); // 加载第一页数据
-  }, [loadMore]); // 确保 useEffect 只在 loadMore 改变时执行
+    const fetchData = async () => {
+      setData([]); // 重置数据
+      setPage(1); // 重置页码
+      setHasMore(true); // 重新加载时设置为有更多数据
+      await loadMore(); // 加载第一页数据
+    };
+
+    fetchData(); // 调用 fetchData
+  }, [section, tab]); // 确保在 section 和 tab 变化时重新加载
 
   return (
     <div className="h-full p-2">
       <div className="bg-gradient-to-r from-pink-200 via-purple-200">
         <NavBar />
         <TabBar />
-        <Search />
+        <Search query={query} change={setQuery} />
         {data.length ? (
           data.map((item) => (
             <CardItem

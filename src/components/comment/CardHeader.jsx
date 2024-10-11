@@ -79,7 +79,7 @@ CardHeader.propTypes = {
   sex: PropTypes.oneOf(["male", "female"]).isRequired,
   time: PropTypes.string.isRequired,
   content: PropTypes.any,
-  display: PropTypes.bool,
+  display: PropTypes.number,
   toname: PropTypes.string,
   tosex: PropTypes.string,
 };

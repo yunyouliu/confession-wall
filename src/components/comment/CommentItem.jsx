@@ -136,7 +136,7 @@ CommentItem.propTypes = {
   section: Proptypes.string,
   userId: Proptypes.number,
   child: Proptypes.array, // 将 child 定义为数组
-  display: Proptypes.bool,
+  display: Proptypes.number,
 };
 
 export default CommentItem;

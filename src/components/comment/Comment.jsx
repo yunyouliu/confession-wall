@@ -93,12 +93,14 @@ const Comment = ({ id }) => {
 
   return (
     <div>
-      <div className="mt-4 bg-white rounded-lg w-[90%]  mx-auto">
-        <CapsuleTabs>
-          <CapsuleTabs.Tab title="最新评论" key="0" />
-          <CapsuleTabs.Tab title="最早评论" key="1" />
-        </CapsuleTabs>
-      </div>
+      {data.length > 0 && (
+        <div className="mt-4 bg-white rounded-lg w-[90%]  mx-auto">
+          <CapsuleTabs>
+            <CapsuleTabs.Tab title="最新评论" key="0" />
+            <CapsuleTabs.Tab title="最早评论" key="1" />
+          </CapsuleTabs>
+        </div>
+      )}
 
       <div className="p-4">
         {data.map((iten, index) => {

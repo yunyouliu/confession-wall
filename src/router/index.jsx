@@ -68,7 +68,7 @@ const routes = [
   },
   {
     path: "/",
-    element: <Navigate to={"/index"} />,
+    element: <Navigate to={"/login"} />,
     errorElement: (
       <Suspense fallback={<div>Loading...</div>}>
         <>err</>

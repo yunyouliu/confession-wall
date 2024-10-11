@@ -13,6 +13,8 @@ import ParticleBackground from "../../utils/ParticleBackground";
 import MD5 from "crypto-js/md5";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import {setUser} from '@/redux/userSlice'
 
 const images = [
   "https://ts3.cn.mm.bing.net/th?id=OSAAS.935FA71F2888C4433B53A47A7EB9115E&w=72&h=72&c=1&rs=1&r=0&o=6&dpr=1.4&pid=5.1",
@@ -28,6 +30,7 @@ const LoginPage = () => {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const captchaRef = useRef();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     captchaRef.current.refresh(); // 刷新验证码
@@ -59,12 +62,13 @@ const LoginPage = () => {
       });
       if (res.data.code === 200) {
         localStorage.setItem("token", res.data.data.token);
+        dispatch(setUser(res.data.data));
         navigate("/index");
       } else {
         Toast.show({ content: res.data.msg });
       }
     } catch (error) {
-      Toast.show({ content: "网络错误，请重试" });
+      Toast.show({ content: error.message });
     }
   };
 

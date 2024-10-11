@@ -49,6 +49,7 @@ const nav = [
   { title: "精选", key: 6 },
   { title: "热榜", key: 7 },
 ];
+
 const TabBar = () => {
   const [visible, setVisible] = useState(false);
   const [activKey, setactivKey] = useState(1);
@@ -63,6 +64,7 @@ const TabBar = () => {
           defaultActiveKey="1"
           activeKey={section}
           onChange={(value) => {
+            setactivKey(value);
             dispatch(setSection(value));
           }}
           className=" bg-[#fde5e9] font-mono decoration-8 leading-3 overflow-hidden  rounded-md"
@@ -141,6 +143,7 @@ const TabBar = () => {
                 key={item.key}
                 onClick={() => {
                   setactivKey(item.key);
+                  dispatch(setSection(item.key));
                   setVisible(false);
                 }}
               >

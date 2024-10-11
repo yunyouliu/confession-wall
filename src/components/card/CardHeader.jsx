@@ -16,7 +16,11 @@ const CardHeader = ({ avatarUrl, name, sex, time, section, content }) => {
   const [visible, setVisible] = useState(false);
   return (
     <div className="text-center flex items-center no-select">
-      <Avatar className="w-[20px] h-[20px] mr-1 rounded-full" lazy src={avatarUrl} />
+      <Avatar
+        className="w-[20px] h-[20px] mr-1 rounded-full"
+        lazy
+        src={avatarUrl}
+      />
       {name}&nbsp; <SexIcon sex={sex} />
       |&nbsp;{section}
       <div
