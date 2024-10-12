@@ -12,10 +12,11 @@ import jsonData from "../../assets/emoji.json";
 import Foot from "./foot";
 import axios from "axios";
 import tabEmoji from "../../assets/tabEmoji.json";
+import { useSelector } from "react-redux";
 
 // 设置最大字符数（包括表情符号）
 const MAX_TEXT_LENGTH = 2000;
-const EmojiSelector = ({ sex, name, avatarUrl }) => {
+const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
   const [text, setText] = useState("");
   const [Visible, setVisible] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -23,6 +24,8 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
   const dropdownRef = useRef(null);
   const input = useRef(null);
   const [fileList, setFileList] = useState([]);
+  const [images, setImgages] = useState([]);
+  const { id } = useSelector((state) => state.user);
 
   const handleEmojiSelect = (emoji) => {
     if (textAreaRef.current) {
@@ -38,40 +41,87 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
   const handPhoto = () => {
     // 调用相机
   };
-  
-  const upload=async(file)=>{
-    const stsResponse = await axios("/oss/policy");
-    console.log("STS Response:", stsResponse.data);
 
-    const { policy, signature, dir, accessid, host } = stsResponse.data.data;
-    console.log("Policy Data:", { policy, signature, dir, accessid, host });
-
-    const formData = new FormData();
-    formData.append("key", `${dir}/${file.name}`);
-    formData.append("OSSAccessKeyId", accessid);
-    formData.append("policy", policy);
-    formData.append("signature", signature);
-    formData.append("success_action_status", "200");
-    formData.append("file", file);
-
-    const ossResponse = await axios.post(host, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    const url = `${host}/${dir}/${file.name}`;
-    console.log("上传成功，文件 URL:", url);
-    setFileList((prev) => [...prev, { url }]);
-    return url;
-  }
-
-  const uploadToOss = async (file) => {
-    // 延时3秒
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    return {
-      url: URL.createObjectURL(file),
+  // 提交评论时的处理逻辑
+  const handleComment = async (val) => {
+    try {
+      let uploadedFiles = [];
+      if (images.length) {
+        uploadedFiles = Promise.all(
+          images.map((item) => uploadToOss(item.file)) // 确保传入的是 item.file
+        );
+      }
+      let imgUrl = [];
+      await uploadedFiles.then((result) => {
+        imgUrl = result;
+      });
+      const { res } = await axios.post("/api/comment", {
+        text,
+        id,
+        display: val ? 1 : 0,
+        images: imgUrl,
+      });
+      if (res.code === 200) {
+        console.log("评论成功");
+      } else {
+        console.log("评论失败");
+      }
+    } catch (error) {
+      console.error("评论提交失败：", error);
     }
+  };
+
+  // 保持原有的上传函数
+  const uploadToOss = async (file) => {
+    try {
+      const stsResponse = await axios.get("/oss/policy");
+      const { policy, signature, dir, accessid, host } = stsResponse.data.data;
+      const url = `${host}/${dir}/${file.name}`;
+      console.log(url);
+      const formData = new FormData();
+      formData.append("key", `${dir}/${file.name}`);
+      formData.append("OSSAccessKeyId", accessid);
+      formData.append("policy", policy);
+      formData.append("signature", signature);
+      formData.append("success_action_status", "200");
+      formData.append("file", file);
+
+      const OSSResponse = await axios.post(host, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: undefined, // 显式地设置为 undefined
+        },
+        withCredentials: false,
+      });
+      if (OSSResponse.status === 200) {
+        return { url };
+      } else {
+        return { error: "上传失败" };
+      }
+    } catch (error) {
+      console.error("上传文件失败:", error.message);
+      return;
+    }
+  };
+
+  //
+  const FilelistChange = (files) => {
+    setFileList(files);
+
+    setImgages(
+      // 保留 images 和filelist 中url相同的
+      images.filter((img) => {
+        return fileList.map((f) => f.url === img.url);
+      })
+    );
+  };
+
+  // 用于选择图片时预览
+  const handleImagePreview = (file) => {
+    let url = URL.createObjectURL(file);
+    // 添加file进去file
+    setImgages((prevFiles) => [...prevFiles, { file, url }]);
+    return { url };
   };
 
   const handSelect = (event) => {
@@ -91,7 +141,7 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
           ref={textAreaRef}
           value={text}
           onChange={(val) => setText(val)}
-          placeholder="想回点什么呢~"
+          placeholder={type === "1" ? "想说点什么呢~" : "想回点什么呢~"}
           maxLength={MAX_TEXT_LENGTH}
           autoSize={{ minRows: 1, maxRows: 5 }}
         />
@@ -147,10 +197,12 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
             value={fileList}
             onChange={(files) => {
               setVisible(false);
-              setFileList(files);
-              console.log(files)
+              FilelistChange(files);
             }}
-            upload={uploadToOss}
+            upload={async (file) => {
+              // 这里可以直接调用上传逻辑
+              return handleImagePreview(file); // 调用 handleImagePreview 以返回 URL
+            }}
           >
             <div
               className={`w-[80px] h-[80px] bg-[#f5f5f5] p-2 mx-2 mt-3 justify-center items-center text-[#999999] ${
@@ -178,7 +230,12 @@ const EmojiSelector = ({ sex, name, avatarUrl }) => {
           </List>
         </div>
       </Popup>
-      <Foot sex={sex} name={name} avatarUrl={avatarUrl} />
+      <Foot
+        sex={sex}
+        name={name}
+        avatarUrl={avatarUrl}
+        handleComment={handleComment}
+      />
     </div>
   );
 };
@@ -187,6 +244,7 @@ EmojiSelector.propTypes = {
   sex: PropTypes.oneOf(["male", "female"]).isRequired,
   name: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default EmojiSelector;

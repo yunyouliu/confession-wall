@@ -6,15 +6,13 @@ import { changeloading } from "@/redux/loadingSlice";
 axios.defaults.baseURL = "http://localhost:1112";
 
 axios.defaults.withCredentials = true;
+
+
 //   超时时间
-axios.defaults.timeout = 5000;
+// axios.defaults.timeout = 5000;
 
 // 配置 axios 的 数据格式化
-axios.defaults.transformResponse = [
-  function (data) {
-    return JSON.parse(data);
-  },
-];
+
 // 配置 axios 的 状态码验证
 axios.defaults.validateStatus = function (status) {
   return status >= 200 && status < 300;

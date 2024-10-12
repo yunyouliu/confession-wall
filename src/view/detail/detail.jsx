@@ -74,6 +74,7 @@ const Detail = () => {
                 sex={data.sex}
                 name={data.name}
                 avatarUrl={data.avatarUrl}
+                type="2"
               />
             </div>
             {/* 添加图片  */}

@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import PropTypes from "prop-types";
-import { Avatar, Popup, Grid, Button } from "antd-mobile";
+import { Avatar, Popup, Grid, Button,Ellipsis} from "antd-mobile";
 import SexIcon from "../card/SexIcon";
 import SvgIcon from "@/components/SvgIcon";
 
@@ -24,7 +24,7 @@ const CardHeader = ({
           display ? avatarUrl : "https://img.qiqi.pro/x/anonymous-avatar.jpg"
         }
       />
-      {display ? name : "匿名"}&nbsp; <SexIcon sex={sex} />
+      {display===0 ? name : "匿名"}&nbsp; <SexIcon sex={sex} />
       {toname && (
         <div className="flex items-center ml-1">
           ▶{toname}
@@ -57,7 +57,7 @@ const CardHeader = ({
       >
         <div className="flex-col items-center">
           <div className="text-center mt-4 text-gray-500">
-            {content.text.slice(0, 18)}...
+          <Ellipsis direction='end' content={content.text} />
           </div>
           <div className=" ">
             <Grid columns={4} gap={8} className=" m-4">

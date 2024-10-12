@@ -70,7 +70,7 @@ const Index = () => {
     };
 
     fetchData(); // 调用 fetchData
-  }, [section, tab]); // 确保在 section 和 tab 变化时重新加载
+  }, [section, tab,query]); // 确保在 section 和 tab 变化时重新加载
 
   return (
     <div className="h-full p-2">

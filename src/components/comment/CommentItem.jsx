@@ -75,7 +75,7 @@ const handleClick = (id) => {
                 />
                 <div
                   onClick={() => {
-                    setApplyName(item.name);
+                    setApplyName(item.display===0?item.name:"匿名");
                     setVisble(true);
                   }}
                 >
@@ -117,7 +117,7 @@ const handleClick = (id) => {
         <div className="flex justify-center items-center h-12 text-xl">
           <span>回复[{applyName}]</span>
         </div>
-        <EmojiSelector sex={sex} name={name} avatarUrl={avatarUrl} />
+        <EmojiSelector sex={sex} name={name} avatarUrl={avatarUrl} type="2" />
       </Popup>
     </div>
   );

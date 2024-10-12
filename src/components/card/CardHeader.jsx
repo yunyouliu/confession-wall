@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import PropTypes from "prop-types";
-import { Avatar, Popup, Grid, Button } from "antd-mobile";
+import { Avatar, Popup, Grid, Button,Ellipsis } from "antd-mobile";
 import SexIcon from "./SexIcon";
 import SvgIcon from "@/components/SvgIcon";
 
@@ -49,12 +49,12 @@ const CardHeader = ({ avatarUrl, name, sex, time, section, content }) => {
       >
         <div className="flex-col items-center">
           <div className="text-center mt-4 text-gray-500">
-            {content.text.slice(0, 18)}...
+          <Ellipsis direction='end' content={content.text} />
           </div>
           <div className=" ">
             <Grid columns={4} gap={8} className=" m-4">
               <div className="rounded-full bg-slate-100 h-12 w-12">
-                <SvgIcon iconName="zhiding" className=" w-9 h-9 mt-2 ml-1" />
+                <SvgIcon iconName="zhiding" className="h-[30px] w-9 mt-2 ml-1" />
               </div>
             </Grid>
             <Button className="w-full fixed bottom-0">取消</Button>

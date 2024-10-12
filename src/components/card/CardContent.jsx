@@ -6,7 +6,7 @@ import { ImageViewer, Image } from "antd-mobile";
 import jsonData from "../../assets/emoji.json"; // 引入 emoji 数据
 import tabEmoji from "../../assets/tabEmoji.json"; // 引入 tabEmoji 数据
 
-const CardContent = ({ text, id, onclick }) => {
+const CardContent = ({ text, id,onclick }) => {
   const [index, setIndex] = useState(0); // 默认从第0张开始
   const [isExpanded, setIsExpanded] = useState(false); // 控制文本展开/收起
   const [isOverflowing, setIsOverflowing] = useState(false); // 是否内容溢出
@@ -127,7 +127,7 @@ const CardContent = ({ text, id, onclick }) => {
 CardContent.propTypes = {
   text: PropTypes.any.isRequired,
   id: PropTypes.number.isRequired,
-  onclick: PropTypes.func.isRequired, // 确保 onclick 是必需的
+  onclick: PropTypes.func, // 确保 onclick 是必需的
 };
 
 export default CardContent;

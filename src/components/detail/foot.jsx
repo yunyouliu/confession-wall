@@ -4,7 +4,7 @@ import { Checkbox, Button } from "antd-mobile";
 import SexIcon from "@/components/card/SexIcon";
 import SvgIcon from "../SvgIcon";
 
-export default function Foot({ sex, name, avatarUrl }) {
+export default function Foot({ sex, name, avatarUrl,handleComment }) {
   const [checked, setChecked] = useState(false);
   return (
     <div className="flex items-center mt-4">
@@ -22,7 +22,7 @@ export default function Foot({ sex, name, avatarUrl }) {
             {checked ? "已匿名" : "可匿名"}
           </span>
         </Checkbox>
-        <Button color="success" className="rounded-3xl h-8 ml-2 px-4" >
+        <Button color="success" className="rounded-3xl h-8 ml-2 px-4" onClick={()=>{handleComment(checked)}} >
           评论
         </Button>
       </div>
@@ -35,4 +35,5 @@ Foot.propTypes = {
   sex: PropTypes.oneOf(["male", "female"]).isRequired,
   name: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
+  handleComment: PropTypes.func.isRequired,
 };
