@@ -75,6 +75,8 @@ const Detail = () => {
                 name={data.name}
                 avatarUrl={data.avatarUrl}
                 type="2"
+                rootId={0}
+                eassyId={data.id}
               />
             </div>
             {/* 添加图片  */}

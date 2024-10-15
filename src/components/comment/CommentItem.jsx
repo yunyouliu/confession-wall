@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useMemo } from "react";
 import { Card, Popup, Button } from "antd-mobile";
 import CardHeader from "./CardHeader";
 import CardContent from "../card/CardContent";
@@ -17,18 +17,37 @@ const CommentItem = ({
   comments,
   userId,
   display,
+  idx,
+  id,
   child = [], // 默认空数组
 }) => {
   const [applyName, setApplyName] = useState(0);
   const [visble, setVisble] = useState(false);
+  const [rootId, setRootId] = useState(0);
   const [showAllChildren, setShowAllChildren] = useState(false); // 控制是否展示全部子评论
 
   // 默认展示一条子评论
   const visibleChildren = showAllChildren ? child : child.slice(0, 1);
 
-const handleClick = (id) => {
-  setVisble(!visble);
-};
+  // 使用usememo 优化Popup中的内容
+  const popupContent = useMemo(() => {
+    return (
+      <div>
+        <div className="flex justify-center items-center h-12 text-xl">
+          <span>回复[{applyName}]</span>
+        </div>
+        <EmojiSelector
+          sex={sex}
+          name={name}
+          avatarUrl={avatarUrl}
+          type="2"
+          rootId={1}
+          postId={id}
+          eassyId={idx}
+        />
+      </div>
+    );
+  }, [applyName, rootId, avatarUrl, name, sex]);
 
   return (
     <div>
@@ -44,11 +63,11 @@ const handleClick = (id) => {
           />
           <div
             onClick={() => {
-              setApplyName(name);
+              setApplyName(display == 1 ? "匿名" : name);
               setVisble(true);
             }}
           >
-            <CardContent text={content} id={userId || 0}  />
+            <CardContent text={content} id={userId || 0} />
           </div>
           <CardFooter
             likes={likes}
@@ -75,11 +94,11 @@ const handleClick = (id) => {
                 />
                 <div
                   onClick={() => {
-                    setApplyName(item.display===0?item.name:"匿名");
+                    setApplyName(item.display === 0 ? item.name : "匿名");
                     setVisble(true);
                   }}
                 >
-                  <CardContent text={item.content} id={item.userId || 0} onclick={() => handleClick(item.id)} />
+                  <CardContent text={item.content} id={item.userId || 0} />
                 </div>
                 <CardFooter
                   likes={item.likes}
@@ -105,19 +124,17 @@ const handleClick = (id) => {
 
       <Popup
         visible={visble}
+        destroyOnClose
         onMaskClick={() => setVisble(false)}
         onClose={() => setVisble(false)}
         bodyStyle={{
-          height: "30vh",
+          minHeight: "30vh",
           borderTopLeftRadius: "8px",
           borderTopRightRadius: "8px",
         }}
         showCloseButton
       >
-        <div className="flex justify-center items-center h-12 text-xl">
-          <span>回复[{applyName}]</span>
-        </div>
-        <EmojiSelector sex={sex} name={name} avatarUrl={avatarUrl} type="2" />
+        {popupContent}
       </Popup>
     </div>
   );
@@ -137,6 +154,8 @@ CommentItem.propTypes = {
   userId: Proptypes.number,
   child: Proptypes.array, // 将 child 定义为数组
   display: Proptypes.number,
+  idx: Proptypes.number,
+  id: Proptypes.number,
 };
 
 export default CommentItem;

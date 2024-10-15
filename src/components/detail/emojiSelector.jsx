@@ -12,11 +12,20 @@ import jsonData from "../../assets/emoji.json";
 import Foot from "./foot";
 import axios from "axios";
 import tabEmoji from "../../assets/tabEmoji.json";
+import { v4 as uuidv4 } from "uuid"; // 引入 uuid
 import { useSelector } from "react-redux";
 
 // 设置最大字符数（包括表情符号）
 const MAX_TEXT_LENGTH = 2000;
-const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
+const EmojiSelector = ({
+  sex,
+  name,
+  avatarUrl,
+  type,
+  postId,
+  rootId,
+  eassyId,
+}) => {
   const [text, setText] = useState("");
   const [Visible, setVisible] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -46,23 +55,30 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
   const handleComment = async (val) => {
     try {
       let uploadedFiles = [];
+      let imgUrl = [];
+      console.log(images);
       if (images.length) {
         uploadedFiles = Promise.all(
-          images.map((item) => uploadToOss(item.file)) // 确保传入的是 item.file
+          images.map((item) => uploadToOss(item)) // 确保传入的是 item.file
         );
+        await uploadedFiles.then((result) => {
+          imgUrl = result;
+        });
       }
-      let imgUrl = [];
-      await uploadedFiles.then((result) => {
-        imgUrl = result;
-      });
-      const { res } = await axios.post("/api/comment", {
-        text,
-        id,
+
+      const { data } = await axios.post("wall/commentform/comments", {
+        userId: id,
+        rootCommentId: rootId,
+        postId,
+        essayId: eassyId,
         display: val ? 1 : 0,
-        images: imgUrl,
+        content: { text, img: imgUrl },
       });
-      if (res.code === 200) {
-        console.log("评论成功");
+      if (data.code === 200) {
+        setText("");
+        setImgages([]);
+        setFileList([]);
+        Toast.show({ content: "评论成功" });
       } else {
         console.log("评论失败");
       }
@@ -74,12 +90,19 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
   // 保持原有的上传函数
   const uploadToOss = async (file) => {
     try {
+      console.log(file);
       const stsResponse = await axios.get("/oss/policy");
       const { policy, signature, dir, accessid, host } = stsResponse.data.data;
-      const url = `${host}/${dir}/${file.name}`;
+
+      // 使用 uuid 生成唯一文件名，保留原始扩展名
+      const fileExtension = file.name.split(".").pop();
+      const uniqueFileName = `${uuidv4()}.${fileExtension}`;
+      const url = `${host}/${dir}/${uniqueFileName}`;
+      // const url = `${host}/${dir}/${file.name}`;
+
       console.log(url);
       const formData = new FormData();
-      formData.append("key", `${dir}/${file.name}`);
+      formData.append("key", `${dir}/${uniqueFileName}`);
       formData.append("OSSAccessKeyId", accessid);
       formData.append("policy", policy);
       formData.append("signature", signature);
@@ -94,7 +117,7 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
         withCredentials: false,
       });
       if (OSSResponse.status === 200) {
-        return { url };
+        return url;
       } else {
         return { error: "上传失败" };
       }
@@ -105,34 +128,28 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
   };
 
   //
-  const FilelistChange = (files) => {
-    setFileList(files);
-
-    setImgages(
-      // 保留 images 和filelist 中url相同的
-      images.filter((img) => {
-        return fileList.map((f) => f.url === img.url);
-      })
-    );
-  };
 
   // 用于选择图片时预览
-  const handleImagePreview = (file) => {
+  const handleImagePreview = async (file) => {
+    // 等待0.8秒
+    await new Promise((resolve) => setTimeout(resolve, 800));
     let url = URL.createObjectURL(file);
-    // 添加file进去file
-    setImgages((prevFiles) => [...prevFiles, { file, url }]);
     return { url };
   };
 
   const handSelect = (event) => {
+    // 触发文件选择框
     const nativeInput = input.current?.nativeElement;
+    // 触发点击事件
     if (nativeInput) {
       nativeInput.click();
     }
   };
 
   return (
-    <div className="p-2 bg-[#fde5e9] shadow-md relative">
+    <div
+      className={`p-2 ${type == "1" ? "" : "bg-[#fde5e9]"}  shadow-md relative`}
+    >
       <div className="bg-white rounded-md">
         <TextArea
           onClick={() => {
@@ -141,9 +158,9 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
           ref={textAreaRef}
           value={text}
           onChange={(val) => setText(val)}
-          placeholder={type === "1" ? "想说点什么呢~" : "想回点什么呢~"}
+          placeholder={type === "1" ? "想发点什么呢~" : "想回点什么呢~"}
           maxLength={MAX_TEXT_LENGTH}
-          autoSize={{ minRows: 1, maxRows: 5 }}
+          autoSize={{ minRows: type == "2" ? 1 : 4, maxRows: 5 }}
         />
         <div className="grid grid-cols-11 w-80 ml-2">
           <svg
@@ -156,7 +173,7 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
           {tabEmoji.map((emoji, index) => (
             <Image
               lazy
-              className="w-6 h-6 mr-2 mb-2 cursor-pointer"
+              className="w-6 h-6 mr-2 mb-2 cursor-pointer "
               src={emoji.url}
               key={index}
               alt={emoji.description}
@@ -195,12 +212,18 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
             columns={3}
             ref={input}
             value={fileList}
+            onDelete={(file) => {
+              setFileList(fileList.filter((item) => item !== file));
+              setImgages(fileList.filter((item) => item !== file));
+            }}
             onChange={(files) => {
               setVisible(false);
-              FilelistChange(files);
+              setFileList(files);
             }}
             upload={async (file) => {
               // 这里可以直接调用上传逻辑
+              setVisible(false);
+              setImgages((prev) => [...prev, file]);
               return handleImagePreview(file); // 调用 handleImagePreview 以返回 URL
             }}
           >
@@ -230,12 +253,14 @@ const EmojiSelector = ({ sex, name, avatarUrl, type }) => {
           </List>
         </div>
       </Popup>
-      <Foot
-        sex={sex}
-        name={name}
-        avatarUrl={avatarUrl}
-        handleComment={handleComment}
-      />
+      {type == "2" && (
+        <Foot
+          sex={sex}
+          name={name}
+          avatarUrl={avatarUrl}
+          handleComment={handleComment}
+        />
+      )}
     </div>
   );
 };
@@ -245,6 +270,9 @@ EmojiSelector.propTypes = {
   name: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  rootId: PropTypes.number,
+  eassyId: PropTypes.number.isRequired,
+  postId: PropTypes.number,
 };
 
 export default EmojiSelector;

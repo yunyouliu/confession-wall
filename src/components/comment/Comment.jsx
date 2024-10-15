@@ -104,7 +104,7 @@ const Comment = ({ id }) => {
 
       <div className="p-4">
         {data.map((iten, index) => {
-          return <CommentItem key={index} child={iten.children} {...iten} />;
+          return <CommentItem idx={id} key={index} child={iten.children} {...iten}  />;
         })}
       </div>
     </div>

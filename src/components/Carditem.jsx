@@ -28,7 +28,7 @@ const CardItem = ({
   };
 
   return (
-    <div className="mt-3 ml-2">
+    <div className="mt-3 ml-2 mr-1">
       <Card className="bg-purple-300">
         <CardHeader
           avatarUrl={avatarUrl}

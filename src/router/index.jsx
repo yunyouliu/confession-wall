@@ -5,6 +5,7 @@ const Login = lazy(() => import("../view/login/login"));
 const Index = lazy(() => import("../view/index/index"));
 const Detail = lazy(() => import("../view/detail/detail"));
 const Register = lazy(() => import("../view/register/register"));
+const EassyPost = lazy(() => import("../view/eassyPost/esaayPost"));
 const routes = [
   {
     path: "/login",
@@ -63,6 +64,15 @@ const routes = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <Detail />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/eassypost/:id",
+    name: "详情",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <EassyPost />
       </Suspense>
     ),
   },

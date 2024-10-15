@@ -29,8 +29,8 @@ axios.interceptors.request.use(
 
     // 在发送请求之前,配置jwt请求头
     if (localStorage.getItem("token")) {
-      // config.headers.Authorization = "Bearer " + localStorage.getItem("token");
-      config.headers.Authorization = localStorage.getItem("token");
+      config.headers.Authorization = "Bearer " + localStorage.getItem("token");
+      // config.headers.Authorization = localStorage.getItem("token");
     }
 
     return config;

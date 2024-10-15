@@ -11,11 +11,12 @@ import {
   Mask,
   Image,
 } from "antd-mobile";
-import { AddCircleOutline, RightOutline } from "antd-mobile-icons";
+import { AddCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
 import SvgIcon from "../SvgIcon.jsx";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import SexIcon from "../card/SexIcon.jsx";
+import { useNavigate } from "react-router-dom";
 
 const tab = [
   {
@@ -63,13 +64,22 @@ const Footer = () => {
   const [visible4, setVisible4] = useState(false);
   const [data, setdata] = useState([]);
   const user = useSelector((state) => state.user);
-
+  const navigate = useNavigate();
+  // 复制
   const handleCopy = () => {
     // 复制文本到剪贴板
     navigator.clipboard
       .writeText(user.id)
       .then(Toast.show("你的ID已复制到剪切板"));
   };
+
+  // 处理跳转
+  const handleClick = (id) => {
+    return function () {
+      navigate(`/eassypost/${id}`);
+    };
+  };
+
   useEffect(() => {
     const FechData = async () => {
       const res = await axios.get(`/wall/user/info/${user.id}`);
@@ -84,6 +94,7 @@ const Footer = () => {
 
   return (
     <div>
+      {/* 底部导航栏 */}
       <TabBar
         activeKey={activeKey}
         className="fixed bottom-1 left-0 right-0 bg-white overflow-hidden select-none"
@@ -112,7 +123,7 @@ const Footer = () => {
         />
       </TabBar>
 
-      {/*   底部导航栏结束 */}
+      {/* 我的信息 */}
       <Popup
         visible={visible1}
         showCloseButton
@@ -229,23 +240,61 @@ const Footer = () => {
         </Button>
       </Popup>
 
+      {/* 选择分类 */}
       <Mask
         visible={visible4}
-        opacity="thick"
         onMaskClick={() => setVisible4(false)}
+        opacity={0.65}
       >
-        {/* <div className="flex items-center justify-center h-full">
-          <div className="text-center items-center h-12 ">
-            <Image src={tab[0].img} width={50} height={50} />
-            <p className="text-xl text-white mt-2">{tab[0].name}</p>
-            <p className="text-xl text-white mt-2">{tab[0].description}</p>
+        <div className="h-full w-full backdrop-blur-sm">
+          {tab.map((item, index) => {
+            return (
+              <div
+                className="flex h-12 w-full mt-8 select-none"
+                key={index}
+                onClick={handleClick(index)}
+              >
+                <Image
+                  src={item.img}
+                  width={40}
+                  height={40}
+                  className="ml-[120px]"
+                />
+                <span className="text-xl text-white ml-2 h-[20px]  float-right ">
+                  {item.name}
+                </span>
+                <span className="text-sm text-gray-300 mt-7 -ml-[40px]">
+                  {item.description}
+                </span>
+              </div>
+            );
+          })}
+          <div
+            className="rounded-full h-40   mt-8"
+            onClick={() => setVisible4(false)}
+          >
+            <CloseCircleOutline
+              className="m-auto"
+              fontSize={45}
+              color="rgb(255, 255, 255)"
+            />
           </div>
-        </div> */}
-        <List className="">
-          <List.Item>
-            <Image src={tab[0].img} width={50} height={50} />
-          </List.Item>
-        </List>
+
+          {/* <div className="flex h-12 w-full mt-8">
+            <Image
+              src={tab[0].img}
+              width={50}
+              height={50}
+              className="ml-[120px]"
+            />
+            <span className="text-xl text-white ml-2 h-[20px]  float-right ">
+              {tab[0].name}
+            </span>
+            <span className="text-sm text-gray-300 mt-7 -ml-[40px]">
+              {tab[0].description}
+            </span>
+          </div> */}
+        </div>
       </Mask>
 
       {/* 性别修改 */}
