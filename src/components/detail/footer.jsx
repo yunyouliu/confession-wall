@@ -8,12 +8,12 @@ const Footer = () => {
       <Button
         className="text-center w-[90%] mt-2 mb-3"
         onClick={() => {
-          navigate(-1);// 点击按钮时导航到主页
+          navigate(-1); // 点击按钮时导航到主页
         }}
       >
-        &lt;&nbsp;返回  
+        &lt;&nbsp;返回
       </Button>
-      <div className=" bottom-0 left-0 right-0 p-1 bg-white text-center text-xs text-gray-500 z-10">
+      <div className="bg-white -ml-2 -mr-2 mt-2">
         本服务由口袋青年提供
       </div>
     </div>

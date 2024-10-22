@@ -114,7 +114,7 @@ const LoginPage = () => {
         />
 
         {/* 验证码 */}
-        <div className="mb-6 flex items-center rounded-md">
+        <div className="mb-6 flex items-center rounded-md" >
           <div className="w-2/3 ml-3">
             <Input
               value={code}

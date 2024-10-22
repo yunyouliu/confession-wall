@@ -1,6 +1,6 @@
 import axios from "axios";
 import { store } from "@/redux/store";
-import { changeloading } from "@/redux/loadingSlice";
+// import { changeloading } from "@/redux/flag";
 
 //   配置 axios 的 baseURL
 axios.defaults.baseURL = "http://localhost:1112";

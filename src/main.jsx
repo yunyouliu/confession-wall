@@ -8,11 +8,17 @@ import router from "./router";
 import "./utils/http";
 import { Provider } from "react-redux";
 import { store } from "././redux/store";
+import ErrorBoundary from "./view/Error/ErrorBoundary ";
+import { AliveScope } from "react-activation";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <StrictMode>
-      <RouterProvider router={router} />
+      <ErrorBoundary>
+        {/* <AliveScope> */}
+          <RouterProvider router={router} />
+        {/* </AliveScope> */}
+      </ErrorBoundary>
     </StrictMode>
   </Provider>
 );

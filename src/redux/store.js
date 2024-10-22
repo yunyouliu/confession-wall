@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // 默认使用 localStorage
 import userReducer from "./userSlice";
 import tabReducer from "./tabSlice";
-import isloadingReducer from "./loadingSlice";
+import commentReducer from "./commentSlice";
 
 // 配置 userReducer 的持久化
 const userPersistConfig = {
@@ -22,12 +22,24 @@ const tabPersistConfig = {
 //   持久化 reducer
 const persistedTabReducer = persistReducer(tabPersistConfig, tabReducer);
 
+// 配置 commentReducer 的持久化
+const commentPersistConfig = {
+  key: "comment",
+  storage,
+};
+
+// 持久化 reducer
+const persistedCommentReducer = persistReducer(
+  commentPersistConfig,
+  commentReducer
+);
+
 // 创建 Redux store
 const store = configureStore({
   reducer: {
     user: persistedUserReducer, // 用户信息持久化
-    tab: persistedTabReducer,  // 板块持久化
-    isloading: isloadingReducer, // 全局加载状态
+    tab: persistedTabReducer, // 板块持久化
+    comment: persistedCommentReducer,
   },
   // 配置 redux-persist 的中间件
   middleware: (getDefaultMiddleware) =>

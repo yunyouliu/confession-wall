@@ -1,41 +1,57 @@
-import { React, useState } from "react";
+import { React } from "react";
 import PropTypes from "prop-types";
-import { Checkbox, Button } from "antd-mobile";
+import { Checkbox, Button, Avatar } from "antd-mobile";
 import SexIcon from "@/components/card/SexIcon";
 import SvgIcon from "../SvgIcon";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelect } from "@/redux/commentSlice";
 
 export default function Foot({
   sex,
   name,
+  type,
   avatarUrl,
   handleComment,
   className,
+  onclick,
 }) {
-  const [checked, setChecked] = useState(false);
+  const dispatch = useDispatch();
+  const { select } = useSelector((state) => state.comment);
   return (
     <div className={`flex items-center mt-4 ${className}`}>
-      <img src={avatarUrl} className="rounded-full w-6 h-6" alt="avatar" />
-      <span className="mt-2 ml-1">{name}</span>
+      <Avatar
+        src={avatarUrl}
+        className="rounded-full w-8 h-8"
+        alt="avatar"
+        onClick={onclick}
+      />
+      <span className="mt-2 ml-1 text-lg" onClick={onclick}>
+        {name}
+      </span>
       <SexIcon className="mt-[11px] ml-1" sex={sex} />
       <SvgIcon iconName="bianji" className="mt-[11px] ml-1" />
       <div className="ml-auto flex items-center h-2">
         <Checkbox
-          checked={checked}
-          onClick={() => setChecked(!checked)}
+          checked={select}
+          onClick={() => dispatch(setSelect(!select))}
           className="mt-1"
         >
-          <span className="text-sm text-gray-500 ml-[-4px]">
-            {checked ? "已匿名" : "可匿名"}
+          <span
+            className={`text-sm  ml-[-4px] ${
+              select ? "text-emerald-500" : "text-gray-500"
+            }`}
+          >
+            {select ? "已匿名" : "可匿名"}
           </span>
         </Checkbox>
         <Button
           color="success"
           className="rounded-3xl h-8 ml-2 px-4"
           onClick={() => {
-            handleComment(checked);
+            handleComment();
           }}
         >
-          评论
+          {type === 1 ? "发布" : "评论"}
         </Button>
       </div>
     </div>
@@ -47,6 +63,8 @@ Foot.propTypes = {
   sex: PropTypes.oneOf(["male", "female"]).isRequired,
   name: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
+  type: PropTypes.number.isRequired,
   handleComment: PropTypes.func.isRequired,
   className: PropTypes.string,
+  onclick: PropTypes.func,
 };

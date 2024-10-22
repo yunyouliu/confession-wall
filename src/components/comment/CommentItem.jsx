@@ -24,6 +24,8 @@ const CommentItem = ({
   const [applyName, setApplyName] = useState(0);
   const [visble, setVisble] = useState(false);
   const [rootId, setRootId] = useState(0);
+  const [postId, setPostId] = useState(0);
+  const [childId, setchildId] = useState(0);
   const [showAllChildren, setShowAllChildren] = useState(false); // 控制是否展示全部子评论
 
   // 默认展示一条子评论
@@ -33,7 +35,7 @@ const CommentItem = ({
   const popupContent = useMemo(() => {
     return (
       <div>
-        <div className="flex justify-center items-center h-12 text-xl">
+        <div className="flex justify-center items-center h-12 text-xl p-2">
           <span>回复[{applyName}]</span>
         </div>
         <EmojiSelector
@@ -42,8 +44,9 @@ const CommentItem = ({
           avatarUrl={avatarUrl}
           type="2"
           rootId={1}
-          postId={id}
+          postId={postId}
           eassyId={idx}
+          childId={childId}
         />
       </div>
     );
@@ -65,6 +68,7 @@ const CommentItem = ({
             onClick={() => {
               setApplyName(display == 1 ? "匿名" : name);
               setVisble(true);
+              setPostId(id);
             }}
           >
             <CardContent text={content} id={userId || 0} />
@@ -96,6 +100,8 @@ const CommentItem = ({
                   onClick={() => {
                     setApplyName(item.display === 0 ? item.name : "匿名");
                     setVisble(true);
+                    setPostId(item.id)
+                    setchildId(id)
                   }}
                 >
                   <CardContent text={item.content} id={item.userId || 0} />

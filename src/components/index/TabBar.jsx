@@ -3,6 +3,7 @@ import { Tabs, Button, Popup, Grid, AutoCenter, Dropdown } from "antd-mobile";
 import SvgIcon from "../SvgIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { setTab, setSection } from "@/redux/tabSlice";
+import PropTypes from "prop-types";
 
 const tabs = [
   {
@@ -30,7 +31,7 @@ const tabs = [
     key: "5",
   },
   {
-    title: "🐕小动物",
+    title: "🐕动物",
     key: "6",
   },
   {
@@ -50,7 +51,7 @@ const nav = [
   { title: "热榜", key: 7 },
 ];
 
-const TabBar = () => {
+const TabBar = (img) => {
   const [visible, setVisible] = useState(false);
   const [activKey, setactivKey] = useState(1);
   const section = useSelector((state) => state.tab.section);
@@ -59,7 +60,7 @@ const TabBar = () => {
 
   return (
     <>
-      <div className="pl-2 pr-0.8  mt-3 justify-between">
+      <div className="pl-1 pr-0.8  mt-5 justify-between">
         <Tabs
           defaultActiveKey="1"
           activeKey={section}
@@ -67,8 +68,9 @@ const TabBar = () => {
             setactivKey(value);
             dispatch(setSection(value));
           }}
-          className=" bg-[#fde5e9] font-mono decoration-8 leading-3 overflow-hidden  rounded-md"
+          className=" bg-white font-mono decoration-8 leading-3 overflow-hidden  rounded-md"
         >
+          {/* bg-[#fde5e9] */}
           {tabs.map((item) => {
             return (
               <Tabs.Tab
@@ -89,7 +91,7 @@ const TabBar = () => {
           onChange={(value) => {
             dispatch(setTab(value));
           }}
-          className=" bg-[#fde5e9] font-mono mr-1 overflow-hidden mt-4 w-[180]  rounded-md"
+          className=" bg-white font-mono mr-1 overflow-hidden mt-4 w-[180]  rounded-md"
         >
           {nav.map((item) => {
             return (
@@ -113,7 +115,9 @@ const TabBar = () => {
       </div>
       <Button
         fill="solid"
-        className="absolute top-[192px] right-[10px]  h-[39px]"
+        className={`absolute  ${
+          img.img?.length > 0 ? "top-[191px]" : "top-[43px]"
+        }  right-[10px]  h-[39px]`}
         onClick={() => {
           setVisible(true);
         }}
@@ -164,6 +168,10 @@ const TabBar = () => {
       </Popup>
     </>
   );
+};
+
+TabBar.propTypes = {
+  img: PropTypes.array,
 };
 
 export default TabBar;

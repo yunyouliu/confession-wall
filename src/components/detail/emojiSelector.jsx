@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextArea,
   Toast,
@@ -13,7 +13,8 @@ import Foot from "./foot";
 import axios from "axios";
 import tabEmoji from "../../assets/tabEmoji.json";
 import { v4 as uuidv4 } from "uuid"; // 引入 uuid
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setFlag } from "@/redux/commentSlice";
 
 // 设置最大字符数（包括表情符号）
 const MAX_TEXT_LENGTH = 2000;
@@ -25,6 +26,7 @@ const EmojiSelector = ({
   postId,
   rootId,
   eassyId,
+  childId,
 }) => {
   const [text, setText] = useState("");
   const [Visible, setVisible] = useState(false);
@@ -35,7 +37,12 @@ const EmojiSelector = ({
   const [fileList, setFileList] = useState([]);
   const [images, setImgages] = useState([]);
   const { id } = useSelector((state) => state.user);
+  const { flag, select, onlyComments, section, top } = useSelector(
+    (state) => state.comment
+  );
+  const dispatch = useDispatch();
 
+  // 处理表情符号选择
   const handleEmojiSelect = (emoji) => {
     if (textAreaRef.current) {
       const newText = text + emoji;
@@ -50,13 +57,19 @@ const EmojiSelector = ({
   const handPhoto = () => {
     // 调用相机
   };
+  useEffect(() => {
+    if (flag) {
+      handleComment();
+      dispatch(setFlag(false));
+    }
+  }, [flag]);
 
   // 提交评论时的处理逻辑
-  const handleComment = async (val) => {
+  const handleComment = async () => {
     try {
       let uploadedFiles = [];
       let imgUrl = [];
-      console.log(images);
+      // console.log(images);
       if (images.length) {
         uploadedFiles = Promise.all(
           images.map((item) => uploadToOss(item)) // 确保传入的是 item.file
@@ -65,15 +78,35 @@ const EmojiSelector = ({
           imgUrl = result;
         });
       }
-
-      const { data } = await axios.post("wall/commentform/comments", {
+      const postData = {
         userId: id,
         rootCommentId: rootId,
         postId,
-        essayId: eassyId,
-        display: val ? 1 : 0,
+        childId,
+        display: select ? 1 : 0,
         content: { text, img: imgUrl },
-      });
+      };
+      // 根据 type 设置请求体
+      if (type === "2") {
+        // 添加 essayId 到请求体
+        // postData.essayId = eassyId;
+      } else if (type === "1") {
+        // 这里可以根据需要修改请求体结构
+        delete postData.childId;
+        delete postData.rootCommentId;
+        delete postData.postId;
+        // 增加
+        postData.onlyComments = onlyComments;
+        postData.top = top;
+        postData.section = section;
+      }
+      const { data } = await axios.post(
+        `${type === "1" ? "wall/essay/save" : "wall/commentform/comments"}`,
+        postData
+      );
+
+      // 重置选中框
+      dispatch({ type: "tab/setVisible", payload: false });
       if (data.code === 200) {
         setText("");
         setImgages([]);
@@ -90,7 +123,7 @@ const EmojiSelector = ({
   // 保持原有的上传函数
   const uploadToOss = async (file) => {
     try {
-      console.log(file);
+      // console.log(file);
       const stsResponse = await axios.get("/oss/policy");
       const { policy, signature, dir, accessid, host } = stsResponse.data.data;
 
@@ -100,7 +133,7 @@ const EmojiSelector = ({
       const url = `${host}/${dir}/${uniqueFileName}`;
       // const url = `${host}/${dir}/${file.name}`;
 
-      console.log(url);
+      // console.log(url);
       const formData = new FormData();
       formData.append("key", `${dir}/${uniqueFileName}`);
       formData.append("OSSAccessKeyId", accessid);
@@ -160,7 +193,7 @@ const EmojiSelector = ({
           onChange={(val) => setText(val)}
           placeholder={type === "1" ? "想发点什么呢~" : "想回点什么呢~"}
           maxLength={MAX_TEXT_LENGTH}
-          autoSize={{ minRows: type == "2" ? 1 : 4, maxRows: 5 }}
+          autoSize={{ minRows: type == "2" ? 1 : 3, maxRows: 5 }}
         />
         <div className="grid grid-cols-11 w-80 ml-2">
           <svg
@@ -211,6 +244,7 @@ const EmojiSelector = ({
           <ImageUploader
             columns={3}
             ref={input}
+            maxCount={9}
             value={fileList}
             onDelete={(file) => {
               setFileList(fileList.filter((item) => item !== file));
@@ -255,7 +289,9 @@ const EmojiSelector = ({
       </Popup>
       {type == "2" && (
         <Foot
+          type={2}
           sex={sex}
+          className=""
           name={name}
           avatarUrl={avatarUrl}
           handleComment={handleComment}
@@ -266,13 +302,14 @@ const EmojiSelector = ({
 };
 
 EmojiSelector.propTypes = {
-  sex: PropTypes.oneOf(["male", "female"]).isRequired,
-  name: PropTypes.string.isRequired,
-  avatarUrl: PropTypes.string.isRequired,
+  sex: PropTypes.oneOf(["male", "female"]),
+  name: PropTypes.string,
+  avatarUrl: PropTypes.string,
   type: PropTypes.string.isRequired,
   rootId: PropTypes.number,
-  eassyId: PropTypes.number.isRequired,
+  eassyId: PropTypes.number,
   postId: PropTypes.number,
+  childId: PropTypes.number,
 };
 
 export default EmojiSelector;

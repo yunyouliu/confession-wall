@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import { KeepAlive, AliveScope } from "react-activation";
 // 懒加载组件
 const Login = lazy(() => import("../view/login/login"));
 const Index = lazy(() => import("../view/index/index"));
@@ -45,17 +46,19 @@ const routes = [
     path: "/index",
     name: "首页",
     element: (
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center h-screen">
-            <div className="text-lg font-semibold text-gray-600">
-              Loading...
+      // <KeepAlive>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center h-screen">
+              <div className="text-lg font-semibold text-gray-600">
+                Loading...
+              </div>
             </div>
-          </div>
-        }
-      >
-        <Index />
-      </Suspense>
+          }
+        >
+          <Index />
+        </Suspense>
+      // </KeepAlive>
     ),
   },
   {
@@ -68,7 +71,7 @@ const routes = [
     ),
   },
   {
-    path: "/eassypost/:id",
+    path: "/eassypost",
     name: "详情",
     element: (
       <Suspense fallback={<div>Loading...</div>}>

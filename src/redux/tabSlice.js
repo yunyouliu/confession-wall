@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const tabSlice = createSlice({
   name: "tab", // 定义切片名称
   initialState: {
-    section: "1", // 板块
-    tab: "2", // 标签
+    section: "0", // 板块
+    tab: "5", // 标签
   },
   reducers: {
     setTab: (state, action) => {
@@ -16,5 +16,5 @@ const tabSlice = createSlice({
   },
 });
 
-export const { setTab ,setSection} = tabSlice.actions;
+export const { setTab, setSection,setFlag,setSelect } = tabSlice.actions;
 export default tabSlice.reducer;

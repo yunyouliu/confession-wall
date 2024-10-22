@@ -53,8 +53,8 @@ const CardHeader = ({ avatarUrl, name, sex, time, section, content }) => {
           </div>
           <div className=" ">
             <Grid columns={4} gap={8} className=" m-4">
-              <div className="rounded-full bg-slate-100 h-12 w-12">
-                <SvgIcon iconName="zhiding" className="h-[30px] w-9 mt-2 ml-1" />
+              <div className="rounded-full bg-slate-100 h-12 w-12 p-2">
+                <SvgIcon iconName="zhiding" className="mt-2 ml-1" />
               </div>
             </Grid>
             <Button className="w-full fixed bottom-0">取消</Button>
