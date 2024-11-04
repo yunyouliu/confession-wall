@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 13:04:40
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:20:16
+ */
 import { React, useState } from "react";
 import { Tabs, Button, Popup, Grid, AutoCenter, Dropdown } from "antd-mobile";
 import SvgIcon from "../SvgIcon";

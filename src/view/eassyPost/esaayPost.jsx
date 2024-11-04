@@ -1,5 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-10-14 14:47:43
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:13:01
+ */
 import { React, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import EmojiSelector from "@/components/detail/emojiSelector";
 import Foot from "@/components/detail/foot";
 import { List, Switch, Toast, Button, Popup, AutoCenter } from "antd-mobile";

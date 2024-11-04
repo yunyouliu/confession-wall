@@ -1,40 +1,53 @@
-import React, { useState } from "react";
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-05 20:51:00
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-31 23:02:39
+ */
+import React from "react";
 import PropTypes from "prop-types";
 import SvgIcon from "../SvgIcon";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleLikeAsync } from "@/redux/commentSlice";
 
-const ActionIcons = ({ likes, comments, views, id }) => {
-  const [isLiked, setIsLiked] = useState(false); // 追踪点赞状态
+const ActionIcons = ({ likes, comments, views, id, type }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const isLiked = useSelector((state) =>
+    state.comment.likedComments.includes(id)
+  );
+  const isRequesting = useSelector((state) => state.comment);
   const handleClick = (id) => {
-    // console.log("点击了卡片内容");
-    navigate("/detail", { state: { userId:id } });
+    navigate("/detail", { state: { userId: id } });
   };
+
   const handleLikeClick = () => {
-    setIsLiked(!isLiked); // 切换点赞状态
+    if (!isRequesting) {
+      dispatch(toggleLikeAsync({ id, type })); // 传递 id 和 type
+    }
   };
 
   return (
     <div className="flex justify-between mt-2">
-      {/* 点赞图标和数量 */}
       <div className="flex items-center no-select">
         <SvgIcon
           iconName={isLiked ? "dianzan1" : "dianzan"}
           className="icon"
           onClick={handleLikeClick}
         />
-        <span className="">{isLiked ? likes + 1 : likes}</span>
+        <span>{isLiked ? likes + 1 : likes}</span>
         {views && (
           <>
-            <SvgIcon iconName="guankan" className="icon ml-3 " />
+            <SvgIcon iconName="guankan" className="icon ml-3" />
             <span>{views}</span>
           </>
         )}
       </div>
 
-      {/* 评论图标和数量 */}
-      {comments!==undefined && (
+      {comments !== undefined && (
         <div className="flex items-center" onClick={() => handleClick(id)}>
           <SvgIcon iconName="liaotian" className="icon" />
           <span className="ml-1">{comments}</span>
@@ -44,12 +57,12 @@ const ActionIcons = ({ likes, comments, views, id }) => {
   );
 };
 
-// 增加新的图标和数值的属性验证
 ActionIcons.propTypes = {
   likes: PropTypes.number.isRequired,
   comments: PropTypes.number,
-  views: PropTypes.number, // 新增观看数值验证
+  views: PropTypes.number,
   id: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default ActionIcons;

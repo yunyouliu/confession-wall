@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-08 11:43:16
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:19:02
+ */
 import { React } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Button, Avatar } from "antd-mobile";

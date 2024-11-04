@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-09 14:24:40
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:16:11
+ */
 import axios from "axios";
 import { store } from "@/redux/store";
 // import { changeloading } from "@/redux/flag";

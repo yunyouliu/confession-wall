@@ -1,6 +1,14 @@
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 00:33:30
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-31 17:12:02
+ */
 import CardItem from "@/components/Carditem";
 import Comment from "@/components/comment/Comment";
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import EmojiSelector from "@/components/detail/emojiSelector";
 import Footer from "@/components/detail/footer";
@@ -13,8 +21,13 @@ const Detail = () => {
   const location = useLocation(); // 获取路由的状态
   const state = location.state;
   const id = state?.userId || 1; // 如果 userId 不存在，则使用默认值 1
+  const hasIncreasedViews = useRef(false); // 标记浏览量是否已增加
 
   //进入页面浏览量增加
+  /**
+   * @name:
+   * @return {*}
+   */
   const increaseViews = async () => {
     try {
       await axios.post(`/wall/essay/view/${id}`);
@@ -24,8 +37,11 @@ const Detail = () => {
   };
 
   useEffect(() => {
-    increaseViews(); // 调用浏览量增加函数
-  }, []);
+    if (!hasIncreasedViews.current) {
+      increaseViews(); // 调用浏览量增加函数
+      hasIncreasedViews.current = true; // 标记为已增加
+    }
+  }, [id]); // 在 id 变化时仍可增加浏览量
 
   useEffect(() => {
     const fetchData = async () => {

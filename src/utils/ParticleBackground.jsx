@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-14 12:19:37
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:16:58
+ */
 // ParticleBackground.js
 import React, { useEffect, useState } from "react";
 import { loadSlim } from "@tsparticles/slim";

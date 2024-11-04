@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-05 20:51:46
+ * @LastEdito rs: yunyouliu
+ * @LastEditTime: 2024-10-27 00:17:44
+ */
 import { React, useState } from "react";
 import PropTypes from "prop-types";
 import { Avatar, Popup, Grid, Button,Ellipsis } from "antd-mobile";

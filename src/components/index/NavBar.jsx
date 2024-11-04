@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 13:03:47
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:19:44
+ */
 import React from "react";
 import { Grid, Image, Swiper, Toast } from "antd-mobile";
 import PropTypes from "prop-types";

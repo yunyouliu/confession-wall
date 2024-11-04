@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-10-21 17:54:53
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:16:36
+ */
 // ossUploader.js
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid"; // 使用 uuid 生成唯一文件名

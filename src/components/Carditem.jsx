@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 17:53:36
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:20:32
+ */
 import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +29,11 @@ const CardItem = ({
 }) => {
   const navigate = useNavigate();
 
+  /**
+   * 处理跳转
+   * @param {number} - 评论 ID
+   * @returns {void}
+   */
   const handleCardClick = (id) => {
     // console.log(userId)
     // 使用 state 传递参数
@@ -44,6 +57,7 @@ const CardItem = ({
           views={views}
           comments={comments}
           id={userId}
+          type="post"
         />
       </Card>
     </div>

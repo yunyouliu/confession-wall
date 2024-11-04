@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 20:33:01
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:19:26
+ */
 import { React, useState, useEffect } from "react";
 import { TabBar, Toast, Mask, Image } from "antd-mobile";
 import { AddCircleOutline, CloseCircleOutline } from "antd-mobile-icons";

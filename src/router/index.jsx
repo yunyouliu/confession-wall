@@ -1,12 +1,22 @@
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-06 12:21:11
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:22:06
+ */
 import React, { Suspense, lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { KeepAlive, AliveScope } from "react-activation";
+// import { KeepAlive, AliveScope } from "react-activation";
+import WithAuth from "./withAuth";
 // 懒加载组件
 const Login = lazy(() => import("../view/login/login"));
 const Index = lazy(() => import("../view/index/index"));
 const Detail = lazy(() => import("../view/detail/detail"));
 const Register = lazy(() => import("../view/register/register"));
 const EassyPost = lazy(() => import("../view/eassyPost/esaayPost"));
+
 const routes = [
   {
     path: "/login",
@@ -56,7 +66,9 @@ const routes = [
             </div>
           }
         >
-          <Index />
+          <WithAuth>
+            <Index />
+          </WithAuth>
         </Suspense>
       // </KeepAlive>
     ),
@@ -66,16 +78,20 @@ const routes = [
     name: "详情",
     element: (
       <Suspense fallback={<div>Loading...</div>}>
-        <Detail />
+        <WithAuth>
+          <Detail />
+        </WithAuth>
       </Suspense>
     ),
   },
   {
     path: "/eassypost",
-    name: "详情",
+    name: "发帖",
     element: (
       <Suspense fallback={<div>Loading...</div>}>
-        <EassyPost />
+        <WithAuth>
+          <EassyPost />
+        </WithAuth>
       </Suspense>
     ),
   },

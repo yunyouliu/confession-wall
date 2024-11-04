@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-07 21:39:12
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:20:41
+ */
 import React from 'react';
  import PropTypes from 'prop-types';
 const CustomDropdown = ({ isOpen, dropdownContent }) => {

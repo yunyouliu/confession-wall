@@ -1,9 +1,18 @@
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-14 12:11:21
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-31 22:21:34
+ */
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // 默认使用 localStorage
 import userReducer from "./userSlice";
 import tabReducer from "./tabSlice";
 import commentReducer from "./commentSlice";
+import authReducer, { initializeAuth } from "./authSlice";
 
 // 配置 userReducer 的持久化
 const userPersistConfig = {
@@ -40,6 +49,7 @@ const store = configureStore({
     user: persistedUserReducer, // 用户信息持久化
     tab: persistedTabReducer, // 板块持久化
     comment: persistedCommentReducer,
+    auth: authReducer,
   },
   // 配置 redux-persist 的中间件
   middleware: (getDefaultMiddleware) =>
@@ -51,6 +61,9 @@ const store = configureStore({
       },
     }),
 });
+
+//  初始化 auth 状态
+store.dispatch(initializeAuth());
 
 // 创建 redux-persist 的持久化存储实例
 const persistor = persistStore(store);

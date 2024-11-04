@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 17:31:02
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:20:06
+ */
 import { React, useState } from "react";
 import { Image, SearchBar, Toast, Ellipsis } from "antd-mobile";
 import { RightOutline } from "antd-mobile-icons";

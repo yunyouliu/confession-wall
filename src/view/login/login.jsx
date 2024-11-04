@@ -14,7 +14,7 @@ import MD5 from "crypto-js/md5";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import {setUser} from '@/redux/userSlice'
+import { setUser } from "@/redux/userSlice";
 
 const images = [
   "https://ts3.cn.mm.bing.net/th?id=OSAAS.935FA71F2888C4433B53A47A7EB9115E&w=72&h=72&c=1&rs=1&r=0&o=6&dpr=1.4&pid=5.1",
@@ -114,7 +114,7 @@ const LoginPage = () => {
         />
 
         {/* 验证码 */}
-        <div className="mb-6 flex items-center rounded-md" >
+        <div className="mb-6 flex items-center rounded-md">
           <div className="w-2/3 ml-3">
             <Input
               value={code}

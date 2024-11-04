@@ -1,31 +1,59 @@
-import { createSlice } from "@reduxjs/toolkit";
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-10-22 13:27:46
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-11-01 15:54:59
+ */
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { updateLikeStatus } from "@/api/api";
+
+// 异步 Thunk：点赞状态同步到数据库
+export const toggleLikeAsync = createAsyncThunk(
+  "comment/toggleLikeAsync",
+  async ({ id, type }, { getState, rejectWithValue }) => {
+    const state = getState();
+    let isLiked;
+
+    if (type === "comment") {
+      isLiked = state.comment.likedComments.includes(id);
+    } else {
+      isLiked = state.comment.likedPosts.includes(id);
+    }
+
+    // 如果当前正在请求，直接返回
+    if (state.comment.isRequesting) {
+      return;
+    }
+    try {
+      await updateLikeStatus(id, !isLiked, type);
+      return { id, type }; // 返回 ID 和类型
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const commentSlice = createSlice({
   name: "comment",
   initialState: {
-    like: [], // 点赞
-    CancelLike: [], // 取消点赞
-    top: 0, // 置顶
-    onlyComments: 0, // 仅自己可评论
-    section: 0, // 板块
+    likedComments: [],
+    likedPosts: [],
+    isRequesting: false, // 新增请求状态
+    top: 0,
+    onlyComments: 0,
+    section: 0,
     flag: false,
     select: false,
   },
   reducers: {
-    // like push
-    like(state, action) {
-      state.like.push(action.payload);
+    setLikedItems(state, action) {
+      state.likedItems = action.payload;
     },
-
-    // like cancel
-    CancelLike(state, action) {
-      state.CancelLike.push(action.payload);
-    },
-
     setTop(state, action) {
       state.top = action.payload;
     },
-
     setOnlyComments(state, action) {
       state.onlyComments = action.payload;
     },
@@ -39,11 +67,39 @@ const commentSlice = createSlice({
       state.select = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(toggleLikeAsync.pending, (state) => {
+        state.isRequesting = true; // 请求开始时设置状态
+      })
+      .addCase(toggleLikeAsync.fulfilled, (state, action) => {
+        const { id, type } = action.payload;
+
+        if (type === "comment") {
+          const index = state.likedComments.indexOf(id);
+          if (index === -1) {
+            state.likedComments.push(id);
+          } else {
+            state.likedComments.splice(index, 1);
+          }
+        } else {
+          const index = state.likedPosts.indexOf(id);
+          if (index === -1) {
+            state.likedPosts.push(id);
+          } else {
+            state.likedPosts.splice(index, 1);
+          }
+        }
+        state.isRequesting = false; // 请求完成后重置状态
+      })
+      .addCase(toggleLikeAsync.rejected, (state) => {
+        state.isRequesting = false; // 请求失败时重置状态
+      });
+  },
 });
 
 export const {
-  like,
-  CancelLike,
+  setLikedItems,
   setTop,
   setOnlyComments,
   setSection,

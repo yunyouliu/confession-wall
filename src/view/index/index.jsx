@@ -1,3 +1,12 @@
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 00:33:20
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-31 17:20:57
+ */
+
 import { React, useState, useEffect, useCallback, useRef } from "react";
 import NavBar from "@/components/index/NavBar";
 import TabBar from "@/components/index/TabBar";
@@ -19,6 +28,7 @@ const img = [
 const Index = () => {
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [Carousel, setCarousel] = useState([]); // 轮播图
   const [query, setQuery] = useState("");
   const loadingRef = useRef(false); // 用 ref 管理 loading 状态
   const pageRef = useRef(1); // 页码 ref 避免异步问题
@@ -29,8 +39,8 @@ const Index = () => {
     if (loadingRef.current || !hasMore) return; // 避免并发请求和重复加载
 
     loadingRef.current = true; // 标记为正在加载
-    Toast.show({ content: "加载中...", position: "bottom", duration: 1500 });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    Toast.show({ content: "加载中...", position: "bottom", duration: 500 });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
       const response = await axios.get("/wall/essay/post/list", {
         params: {
@@ -81,10 +91,21 @@ const Index = () => {
     fetchData();
   }, [section, tab, query]);
 
+  useEffect(() => {
+    // 获取轮播图
+    axios.get("/wall/carousel/list").then((res) => {
+      if (res.data.code === 200) {
+        setCarousel(res.data.data);
+      } else {
+        console.log("获取轮播图失败");
+      }
+    });
+  }, []);
+
   return (
     <div className="p-2 bg-gradient-to-r from-pink-200 via-purple-200 min-h-screen">
-      <NavBar img={img} />
-      <TabBar img={img} />
+      <NavBar img={Carousel} />
+      <TabBar img={Carousel} />
       <Search query={query} change={setQuery} />
       {data.map((item) => (
         <CardItem

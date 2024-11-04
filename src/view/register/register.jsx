@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input, Button, Toast, List, NavBar } from "antd-mobile";
 import { MailOutline, LockOutline } from "antd-mobile-icons"; // 引入图标
 import { useNavigate } from "react-router-dom";

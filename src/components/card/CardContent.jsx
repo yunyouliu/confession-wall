@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-05 20:51:14
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:17:27
+ */
 // src/CardContent.jsx
 
 import { React, useState, useEffect, useRef } from "react";

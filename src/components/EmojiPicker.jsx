@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-06 14:45:39
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:21:02
+ */
 import InputEmoji from "react-input-emoji";
 import React, { useState } from "react";
 

@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-09 10:00:03
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-31 16:38:31
+ */
 import { React, useState, useMemo } from "react";
 import { Card, Popup, Button } from "antd-mobile";
 import CardHeader from "./CardHeader";
@@ -74,6 +82,7 @@ const CommentItem = ({
             <CardContent text={content} id={userId || 0} />
           </div>
           <CardFooter
+            type="comment"
             likes={likes}
             views={views}
             comments={comments}
@@ -100,13 +109,14 @@ const CommentItem = ({
                   onClick={() => {
                     setApplyName(item.display === 0 ? item.name : "匿名");
                     setVisble(true);
-                    setPostId(item.id)
-                    setchildId(id)
+                    setPostId(item.id);
+                    setchildId(id);
                   }}
                 >
                   <CardContent text={item.content} id={item.userId || 0} />
                 </div>
                 <CardFooter
+                  ytpe="comment"
                   likes={item.likes}
                   views={item.views}
                   comments={item.comments}

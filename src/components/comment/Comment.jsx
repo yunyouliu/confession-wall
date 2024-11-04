@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-09 18:35:51
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-10-27 00:18:21
+ */
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { CapsuleTabs, InfiniteScroll, DotLoading } from "antd-mobile";
 import CommentItem from "./CommentItem";
