@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-05 20:51:00
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-31 23:02:39
+ * @LastEditTime: 2024-11-08 16:19:42
  */
 import React from "react";
 import PropTypes from "prop-types";
@@ -17,17 +17,16 @@ const ActionIcons = ({ likes, comments, views, id, type }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLiked = useSelector((state) =>
-    state.comment.likedComments.includes(id)
+    type === "comment"
+      ? state.comment.likedComments.includes(id)
+      : state.comment.likedPosts.includes(id)
   );
-  const isRequesting = useSelector((state) => state.comment);
   const handleClick = (id) => {
     navigate("/detail", { state: { userId: id } });
   };
 
   const handleLikeClick = () => {
-    if (!isRequesting) {
-      dispatch(toggleLikeAsync({ id, type })); // 传递 id 和 type
-    }
+    dispatch(toggleLikeAsync({ id, type })); // 传递 id 和 type
   };
 
   return (

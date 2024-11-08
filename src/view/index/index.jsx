@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 00:33:20
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-31 17:20:57
+ * @LastEditTime: 2024-11-08 16:24:29
  */
 
 import { React, useState, useEffect, useCallback, useRef } from "react";
@@ -29,6 +29,7 @@ const Index = () => {
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [Carousel, setCarousel] = useState([]); // 轮播图
+  const [total, setTotal] = useState([]) // 总数
   const [query, setQuery] = useState("");
   const loadingRef = useRef(false); // 用 ref 管理 loading 状态
   const pageRef = useRef(1); // 页码 ref 避免异步问题
@@ -93,18 +94,20 @@ const Index = () => {
 
   useEffect(() => {
     // 获取轮播图
-    axios.get("/wall/carousel/list").then((res) => {
-      if (res.data.code === 200) {
-        setCarousel(res.data.data);
-      } else {
-        console.log("获取轮播图失败");
-      }
-    });
+    const fechData=async()=>{
+      const [total,Carousel]=await Promise.all([
+        axios.get("/wall/user/selectetotal"),
+        axios.get("/wall/carousel/carousel"),
+      ]);
+      setTotal(total.data.total)
+      setCarousel(Carousel.data.data)
+    }
+    fechData()
   }, []);
 
   return (
     <div className="p-2 bg-gradient-to-r from-pink-200 via-purple-200 min-h-screen">
-      <NavBar img={Carousel} />
+      <NavBar img={Carousel} total={total} />
       <TabBar img={Carousel} />
       <Search query={query} change={setQuery} />
       {data.map((item) => (

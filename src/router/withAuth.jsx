@@ -15,33 +15,25 @@ import { Toast } from "antd-mobile";
 
 const RequireAuth = ({ children }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const token = localStorage.getItem("token"); // 从 localStorage 获取 token
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // 从 Redux 获取登录状态
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/login");
-  //     Toast.show({
-  //       content: "请先登录",
-  //       position: "bottom",
-  //       duration: 2000,
-  //     });
-  //   }
-  //   if (!isLoggedIn) {
-  //     // 如果用户未认证，重定向到登录页面
-  //     navigate("/login");
-  //     Toast.show({
-  //       content: "token失效",
-  //       position: "bottom",
-  //       duration: 2000,
-  //     });
-  //   }
-  // }, [isLoggedIn, navigate]);
+  useEffect(() => {
+    // 检查 token 是否存在以及是否登录
+    if (!token || !isLoggedIn) {
+      Toast.show({
+        content: "请先登录",
+        position: "bottom",
+        duration: 2000,
+      });
+      navigate("/login"); // 重定向到登录页面
+    }
+  }, [isLoggedIn, token, navigate]);
 
-  // // 如果用户未认证，返回 null，不渲染子组件
-  // if (!isLoggedIn) {
-  //   return null;
-  // }
+  // 如果用户未认证或 token 无效，返回 null，不渲染子组件
+  if (!isLoggedIn || !token) {
+    return null;
+  }
 
   // 如果用户已认证，渲染子组件
   return children;

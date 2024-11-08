@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-14 12:11:21
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-31 22:21:34
+ * @LastEditTime: 2024-11-08 17:12:00
  */
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
@@ -43,13 +43,20 @@ const persistedCommentReducer = persistReducer(
   commentReducer
 );
 
+// 持久化aureducer
+const authPersistConfig = {
+  key: "auth",
+  storage,
+};
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
 // 创建 Redux store
 const store = configureStore({
   reducer: {
     user: persistedUserReducer, // 用户信息持久化
     tab: persistedTabReducer, // 板块持久化
     comment: persistedCommentReducer,
-    auth: authReducer,
+    auth:  persistedAuthReducer,
   },
   // 配置 redux-persist 的中间件
   middleware: (getDefaultMiddleware) =>

@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-06 16:01:16
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-03 20:50:03
+ * @LastEditTime: 2024-11-08 16:35:29
  */
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -24,6 +24,7 @@ import tabEmoji from "../../assets/tabEmoji.json"; // Tab 表情包数据
 import { v4 as uuidv4 } from "uuid"; // 生成唯一标识符
 import { useSelector, useDispatch } from "react-redux";
 import { setFlag } from "@/redux/commentSlice"; // Redux action
+import { useNavigate } from "react-router-dom";
 
 // 设置最大输入字符数
 const MAX_TEXT_LENGTH = 2000;
@@ -55,10 +56,13 @@ const EmojiSelector = ({
     (state) => state.comment
   ); // 从 Redux 获取评论状态
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const ossAxios = axios.create({
-    baseURL: "http://localhost:1112", // OSS 的基本 URL
+    // baseURL: "http://localhost:1112", // OSS 的基本 URL
     timeout: 5000, // 可根据需要设置超时时间
+    headers: { "Content-Type": "multipart/form-data" },
+    withCredentials: false,
   });
 
   /**
@@ -110,6 +114,7 @@ const EmojiSelector = ({
 
         if (failedUploads.length) {
           Toast.show({ content: "部分图片上传失败，请重试" });
+          return;
         }
       }
 
@@ -132,7 +137,6 @@ const EmojiSelector = ({
         postData.top = top;
         postData.section = section;
       }
-
       const { data } = await axios.post(
         `${type === "1" ? "wall/essay/save" : "wall/commentform/comments"}`,
         postData
@@ -144,12 +148,18 @@ const EmojiSelector = ({
         setText(""); // 重置输入框
         setImgages([]); // 清空图片
         setFileList([]); // 清空文件列表
-        Toast.show({ content: "评论成功" });
+        Toast.show({ content: type === "1" ? "发布成功" : "回复成功" });
+       if(type === "1"){
+        navigate("/index");
+       }else{
+        // 刷新
+        window.location.reload();
+       }
       } else {
-        Toast.show({ content: "评论失败，请稍后再试" });
+        Toast.show({ content: "error,请稍后再试" });
       }
     } catch (error) {
-      Toast.show({ content: "评论提交失败，请检查网络" });
+      Toast.show({ content: "提交失败，请检查网络" });
     } finally {
       setLoading(false); // 结束加载
     }
@@ -162,6 +172,7 @@ const EmojiSelector = ({
    */
   const uploadToOss = async (file) => {
     try {
+      console.log(file);
       const stsResponse = await axios.get("/oss/policy");
       const { policy, signature, dir, accessid, host } = stsResponse.data.data;
       const fileExtension = file.name.split(".").pop();
@@ -178,7 +189,7 @@ const EmojiSelector = ({
       const OSSResponse = await ossAxios.post(host, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
+      console.log(url);
       if (OSSResponse.status === 200 || OSSResponse.status === 204) return url;
       throw new Error("上传失败");
     } catch (error) {

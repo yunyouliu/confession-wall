@@ -1,45 +1,47 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-10-16 18:52:11
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:20:24
+ * @LastEditTime: 2024-11-08 16:52:13
  */
 // UserPopup.jsx
 import { Popup, List, AutoCenter, Toast, Input, Button } from "antd-mobile";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { updateUserInfo } from "@/api/api";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/userSlice";
 
 const UseInfo = ({ visible, onClose, user, onCopy }) => {
   const [visibleNickname, setVisibleNickname] = useState(false);
   const [visibleGender, setVisibleGender] = useState(false);
   const [newNickname, setNewNickname] = useState("");
   const [selectedGender, setSelectedGender] = useState(false); // 默认 false
-
+  const dispatch = useDispatch();
   // 当 user.sex 变化时同步更新 selectedGender
   useEffect(() => {
     setSelectedGender(user.sex === "male");
   }, [user.sex]);
 
-  const handleGenderChange = async () => {
-    setVisibleGender(false);
-    const { data } = await axios.put("wall/user/update", {
-      param: { sex: selectedGender ? "male" : "female" },
-    });
-    if (data.code === 200) {
-      Toast.show("修改成功");
+  const handleUserUpdate = async (type, value) => {
+    let visibleSetter, updateField;
+    if (type === "gender") {
+      visibleSetter = setVisibleGender;
+      updateField = { sex: value ? "male" : "female" };
+    } else if (type === "nickname") {
+      visibleSetter = setVisibleNickname;
+      updateField = { name: value };
     }
-  };
 
-  const handleNicknameChange = async () => {
-    setVisibleNickname(false);
-    const { data } = await axios.put("wall/user/update", {
-      param: { name: newNickname },
-    });
+    visibleSetter(false);
+    const { data } = await axios.put("wall/user/update", updateField);
     if (data.code === 200) {
       Toast.show("修改成功");
+      const updatedData = await updateUserInfo(user.id);
+      dispatch(setUser(updatedData.user));
     }
   };
   return (
@@ -158,7 +160,9 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
           className="w-4/5 m-auto"
           shape="rounded"
           color="success"
-          onClick={handleNicknameChange}
+          onClick={() => {
+            handleUserUpdate("nickname", newNickname);
+          }}
         >
           保存
         </Button>
@@ -210,7 +214,9 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
           className=" w-3/5  m-auto mt-6"
           shape="rounded"
           color="success"
-          onClick={handleGenderChange}
+          onClick={() => {
+            handleUserUpdate("sex", selectedGender ? "male" : "female");
+          }}
         >
           保存
         </Button>

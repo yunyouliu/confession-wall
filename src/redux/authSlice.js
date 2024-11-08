@@ -19,9 +19,7 @@ export const initializeAuth = createAsyncThunk(
         if (!response.ok) {
           throw new Error("Token validation failed");
         }
-
-        const user = await response.json();
-        return user; // 返回用户信息
+        return response.data; // 返回用户信息
       } catch (error) {
         return rejectWithValue(error.message);
       }

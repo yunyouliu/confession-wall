@@ -1,21 +1,21 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-09-04 20:33:01
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:19:26
+ * @LastEditTime: 2024-11-08 16:44:41
  */
 import { React, useState, useEffect } from "react";
 import { TabBar, Toast, Mask, Image } from "antd-mobile";
 import { AddCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
 import SvgIcon from "../SvgIcon.jsx";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UseInfo from "./UserInfo.jsx";
 import { useDispatch } from "react-redux";
 import { setSection } from "@/redux/commentSlice.js";
+import { updateUserInfo } from "@/api/api";
 
 const tab = [
   {
@@ -82,9 +82,9 @@ const Footer = () => {
 
   useEffect(() => {
     const FechData = async () => {
-      const res = await axios.get(`/wall/user/info/${user.id}`);
+      const res = await updateUserInfo(user.id);
       if (res.data.code === 200) {
-        setdata(res.data.user);
+        setdata(res.user);
       } else {
         Toast.show("获取数据失败");
       }

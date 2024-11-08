@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-10-22 13:27:46
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-01 15:54:59
+ * @LastEditTime: 2024-11-08 16:17:28
  */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { updateLikeStatus } from "@/api/api";
@@ -15,21 +15,17 @@ export const toggleLikeAsync = createAsyncThunk(
   async ({ id, type }, { getState, rejectWithValue }) => {
     const state = getState();
     let isLiked;
-
     if (type === "comment") {
       isLiked = state.comment.likedComments.includes(id);
     } else {
       isLiked = state.comment.likedPosts.includes(id);
     }
-
-    // 如果当前正在请求，直接返回
-    if (state.comment.isRequesting) {
-      return;
-    }
     try {
+      // 调用 API 更新点赞状态
       await updateLikeStatus(id, !isLiked, type);
       return { id, type }; // 返回 ID 和类型
     } catch (error) {
+      console.error("Error in toggleLikeAsync", error);
       return rejectWithValue(error.message);
     }
   }
@@ -40,7 +36,6 @@ const commentSlice = createSlice({
   initialState: {
     likedComments: [],
     likedPosts: [],
-    isRequesting: false, // 新增请求状态
     top: 0,
     onlyComments: 0,
     section: 0,
@@ -49,7 +44,8 @@ const commentSlice = createSlice({
   },
   reducers: {
     setLikedItems(state, action) {
-      state.likedItems = action.payload;
+      state.likedComments = action.payload;
+      state.likedPosts = action.payload;
     },
     setTop(state, action) {
       state.top = action.payload;
@@ -70,30 +66,29 @@ const commentSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(toggleLikeAsync.pending, (state) => {
-        state.isRequesting = true; // 请求开始时设置状态
+        console.log("requesting");
       })
       .addCase(toggleLikeAsync.fulfilled, (state, action) => {
         const { id, type } = action.payload;
-
         if (type === "comment") {
           const index = state.likedComments.indexOf(id);
           if (index === -1) {
-            state.likedComments.push(id);
+            state.likedComments.push(id); //添加到已点赞的评论中
           } else {
-            state.likedComments.splice(index, 1);
+            state.likedComments.splice(index, 1); //从已点赞的评论中移除
           }
         } else {
           const index = state.likedPosts.indexOf(id);
           if (index === -1) {
-            state.likedPosts.push(id);
+            state.likedPosts.push(id); //添加到已点赞的文章中
           } else {
-            state.likedPosts.splice(index, 1);
+            state.likedPosts.splice(index, 1); //从已点赞的文章中移除
           }
         }
         state.isRequesting = false; // 请求完成后重置状态
       })
-      .addCase(toggleLikeAsync.rejected, (state) => {
-        state.isRequesting = false; // 请求失败时重置状态
+      .addCase(toggleLikeAsync.rejected, (state, action) => {
+        console.error("Eroor in toggleLikeAsync", action.payload);
       });
   },
 });
