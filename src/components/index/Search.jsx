@@ -12,17 +12,21 @@ import { RightOutline } from "antd-mobile-icons";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Search = ({ query, change }) => {
   const [searchValue, setSearchValue] = useState(query);
   const [data, setdata] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
   const onSearchSubmit = () => {
     change(searchValue); // 提交搜索时，更新父组件中的 query 值
   };
   useEffect(() => {
     const fechData = async () => {
       const res = await axios("/wall/essay/post/hotEssay");
+      
       if (res.data.code === 200) {
+        // console.log(res.data.data);
         setdata(res.data.data);
       } else {
         Toast.show("获取数据失败");
@@ -39,6 +43,11 @@ const Search = ({ query, change }) => {
     return () => clearInterval(intervalId); // 清理定时器
   }, [data]);
 
+  const handleClick = () => {
+    // 点击事件处理逻辑
+    navigate("/detail", { state: { userId: data[currentIndex]?.id } });
+  };
+
   return (
     <div>
       <SearchBar
@@ -54,7 +63,10 @@ const Search = ({ query, change }) => {
         className="ml-1 mt-3 mr-1 bg-white rounded-lg"
       />
 
-      <div className="bg-[#ffffff] mr-0.5 mt-4 ml-1 rounded-md h-[36px] text-center flex leading-9  select-none">
+      <div
+        className="bg-[#ffffff] mr-0.5 mt-4 ml-1 rounded-md h-[36px] text-center flex leading-9  select-none"
+        onClick={handleClick}
+      >
         <Image
           className=" w-full mt-1 truncate ..."
           width={25}

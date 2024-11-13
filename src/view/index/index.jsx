@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 00:33:20
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:24:29
+ * @LastEditTime: 2024-11-13 15:05:21
  */
 
 import { React, useState, useEffect, useCallback, useRef } from "react";
@@ -96,10 +96,10 @@ const Index = () => {
     // 获取轮播图
     const fechData=async()=>{
       const [total,Carousel]=await Promise.all([
-        axios.get("/wall/user/selectetotal"),
-        axios.get("/wall/carousel/carousel"),
+        axios("/wall/user/seletetotal"),
+        axios("/wall/carousel/carousel"),
       ]);
-      setTotal(total.data.total)
+      setTotal(total.data.data)
       setCarousel(Carousel.data.data)
     }
     fechData()
@@ -115,7 +115,7 @@ const Index = () => {
           userId={item.id}
           key={item.id}
           avatarUrl={item.avatarUrl}
-          name={item.name}
+          name={item.userName}
           sex={item.sex}
           time={item.time}
           content={item.content}

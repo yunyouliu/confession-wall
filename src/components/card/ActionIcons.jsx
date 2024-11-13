@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-05 20:51:00
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:19:42
+ * @LastEditTime: 2024-11-13 15:03:18
  */
 import React from "react";
 import PropTypes from "prop-types";
@@ -21,6 +21,7 @@ const ActionIcons = ({ likes, comments, views, id, type }) => {
       ? state.comment.likedComments.includes(id)
       : state.comment.likedPosts.includes(id)
   );
+
   const handleClick = (id) => {
     navigate("/detail", { state: { userId: id } });
   };
@@ -38,7 +39,7 @@ const ActionIcons = ({ likes, comments, views, id, type }) => {
           onClick={handleLikeClick}
         />
         <span>{isLiked ? likes + 1 : likes}</span>
-        {views && (
+        {views>200 && (
           <>
             <SvgIcon iconName="guankan" className="icon ml-3" />
             <span>{views}</span>

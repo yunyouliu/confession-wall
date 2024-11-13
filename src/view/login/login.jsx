@@ -25,8 +25,8 @@ const images = [
 ];
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("2876177343@qq.com");
-  const [password, setPassword] = useState("123456");
+  const [username, setUsername] = useState("1");
+  const [password, setPassword] = useState("111111");
   const [code, setCode] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [visible, setVisible] = useState(false);
@@ -67,8 +67,8 @@ const LoginPage = () => {
         const status = await initializeLikeStatus();
         dispatch(
           setLikedItems({
-            likedComments: status.data.data.commentFormIds,
-            likedPosts: status.data.data.essayIds,
+            likedComments: status.data.commentFormIds,
+            likedPosts: status.data.essayIds,
           })
         );
         dispatch(setUser(res.data.data));

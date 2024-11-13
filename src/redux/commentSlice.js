@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-10-22 13:27:46
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:17:28
+ * @LastEditTime: 2024-11-12 18:17:07
  */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { updateLikeStatus } from "@/api/api";
@@ -44,8 +44,8 @@ const commentSlice = createSlice({
   },
   reducers: {
     setLikedItems(state, action) {
-      state.likedComments = action.payload;
-      state.likedPosts = action.payload;
+      state.likedComments = action.payload.likedComments || [];
+      state.likedPosts = action.payload.likedPosts|| [];
     },
     setTop(state, action) {
       state.top = action.payload;

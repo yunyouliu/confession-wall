@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import res from "antd-mobile-icons/es/AaOutline";
+import axios from "axios";
 // 创建异步 thunk
 export const initializeAuth = createAsyncThunk(
   "auth/initializeAuth",
@@ -8,15 +9,14 @@ export const initializeAuth = createAsyncThunk(
     if (token) {
       try {
         // 验证 token
-        const response = await fetch("/api/auth/validate-token", {
-          method: "POST",
+        const response = await axios("/wall/auth/validate-token", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+          baseURL: "http://localhost:1112",
         });
-
-        if (!response.ok) {
+        if (response.status !== 200) {
           throw new Error("Token validation failed");
         }
         return response.data; // 返回用户信息

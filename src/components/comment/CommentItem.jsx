@@ -86,7 +86,7 @@ const CommentItem = ({
             likes={likes}
             views={views}
             comments={comments}
-            id={userId}
+            id={id}
           />
         </Card>
 
@@ -120,7 +120,7 @@ const CommentItem = ({
                   likes={item.likes}
                   views={item.views}
                   comments={item.comments}
-                  id={item.userId}
+                  id={item.id}
                 />
               </Card>
             ))}

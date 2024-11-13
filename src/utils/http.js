@@ -1,5 +1,13 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-09 14:24:40
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-11-13 14:28:55
+ */
+/*
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-09-09 14:24:40
@@ -11,10 +19,10 @@ import { store } from "@/redux/store";
 // import { changeloading } from "@/redux/flag";
 
 //   配置 axios 的 baseURL
+// axios.defaults.baseURL = "/api";
 axios.defaults.baseURL = "http://localhost:1112";
 
 axios.defaults.withCredentials = true;
-
 
 //   超时时间
 // axios.defaults.timeout = 5000;

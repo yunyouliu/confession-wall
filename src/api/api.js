@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-10-26 20:47:07
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:37:08
+ * @LastEditTime: 2024-11-13 14:43:54
  */
 import axios from "axios";
 // 更新点赞状态
@@ -54,6 +54,7 @@ export const initializeAuths = async () => {
 export const updateUserInfo = async (id) => {
   try {
     const response = await axios.get(`/wall/user/info/${id}`);
+    // console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("更新用户信息失败：", error);

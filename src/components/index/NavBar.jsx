@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 13:03:47
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:28:29
+ * @LastEditTime: 2024-11-12 18:25:33
  */
 import React from "react";
 import { Image, Swiper, Toast } from "antd-mobile";
@@ -14,9 +14,9 @@ import PropTypes from "prop-types";
 
 // const colors = ["#ace0ff", "#bcffbd", "#e4fabd", "#ffcfac"];
 
-const NavBar = (img, total) => {
+const NavBar = ({ img, total }) => {
   // 轮播图数据
-  const items = img.img.map((img, index) => (
+  const items = img.img?.map((img, index) => (
     <Swiper.Item key={index}>
       <Image lazy src={img.img} alt={img} />
     </Swiper.Item>
@@ -55,7 +55,7 @@ const NavBar = (img, total) => {
 
 NavBar.propTypes = {
   img: PropTypes.array,
-  total: PropTypes.array,
+  total: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 export default NavBar;

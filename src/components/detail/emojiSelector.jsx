@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-06 16:01:16
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:35:29
+ * @LastEditTime: 2024-11-13 14:52:31
  */
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -149,12 +149,12 @@ const EmojiSelector = ({
         setImgages([]); // 清空图片
         setFileList([]); // 清空文件列表
         Toast.show({ content: type === "1" ? "发布成功" : "回复成功" });
-       if(type === "1"){
-        navigate("/index");
-       }else{
-        // 刷新
-        window.location.reload();
-       }
+        if (type === "1") {
+          navigate("/index");
+        } else {
+          //  更新本地数据
+          return
+        }
       } else {
         Toast.show({ content: "error,请稍后再试" });
       }
@@ -363,7 +363,7 @@ const EmojiSelector = ({
           type={2}
           sex={sex}
           className=""
-          name={name}
+          name={name || "匿名"}
           avatarUrl={avatarUrl}
           handleComment={handleComment}
         />

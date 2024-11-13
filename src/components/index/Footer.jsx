@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 20:33:01
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:44:41
+ * @LastEditTime: 2024-11-13 14:34:35
  */
 import { React, useState, useEffect } from "react";
 import { TabBar, Toast, Mask, Image } from "antd-mobile";
@@ -83,11 +83,7 @@ const Footer = () => {
   useEffect(() => {
     const FechData = async () => {
       const res = await updateUserInfo(user.id);
-      if (res.data.code === 200) {
-        setdata(res.user);
-      } else {
-        Toast.show("获取数据失败");
-      }
+      setdata(res);
     };
     FechData();
   }, [user]);
@@ -169,7 +165,7 @@ const Footer = () => {
       <UseInfo
         visible={visible1}
         onClose={() => setVisible1(false)}
-        user={data}
+        user={user}
         onCopy={handleCopy}
       />
     </div>

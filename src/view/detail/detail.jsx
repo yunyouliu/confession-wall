@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 00:33:30
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-31 17:12:02
+ * @LastEditTime: 2024-11-13 15:06:41
  */
 import CardItem from "@/components/Carditem";
 import Comment from "@/components/comment/Comment";
@@ -30,7 +30,7 @@ const Detail = () => {
    */
   const increaseViews = async () => {
     try {
-      await axios.post(`/wall/essay/view/${id}`);
+      await axios.put(`/wall/essay/views/${id}`);
     } catch (error) {
       console.error("Error increasing views:", error);
     }
@@ -86,7 +86,7 @@ const Detail = () => {
               userId={data.id}
               key={data.id}
               avatarUrl={data.avatarUrl}
-              name={data.name}
+              name={data.userName}
               sex={data.sex}
               time={data.time}
               content={data.content}

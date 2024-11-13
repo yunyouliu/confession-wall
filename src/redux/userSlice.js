@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-14 12:11:21
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2024-11-12 18:31:06
+ */
 // redux/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 

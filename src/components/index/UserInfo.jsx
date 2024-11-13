@@ -4,22 +4,26 @@
  * @Author: yunyouliu
  * @Date: 2024-10-16 18:52:11
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-08 16:52:13
+ * @LastEditTime: 2024-11-13 15:31:54
  */
 // UserPopup.jsx
 import { Popup, List, AutoCenter, Toast, Input, Button } from "antd-mobile";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { updateUserInfo } from "@/api/api";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/userSlice";
+import AvatarCrop from "./AvatarCrop";
 
 const UseInfo = ({ visible, onClose, user, onCopy }) => {
   const [visibleNickname, setVisibleNickname] = useState(false);
   const [visibleGender, setVisibleGender] = useState(false);
   const [newNickname, setNewNickname] = useState("");
   const [selectedGender, setSelectedGender] = useState(false); // 默认 false
+  const [visibleAvatarCrop, setVisibleAvatarCrop] = useState(false); // 头像裁剪弹窗显示状态
+  const [imageUrl, setImageUrl] = useState(null); // 选择的头像文件
+
   const dispatch = useDispatch();
   // 当 user.sex 变化时同步更新 selectedGender
   useEffect(() => {
@@ -35,15 +39,22 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
       visibleSetter = setVisibleNickname;
       updateField = { name: value };
     }
-
     visibleSetter(false);
     const { data } = await axios.put("wall/user/update", updateField);
     if (data.code === 200) {
+      // 清除
+      setNewNickname("");
       Toast.show("修改成功");
       const updatedData = await updateUserInfo(user.id);
       dispatch(setUser(updatedData.user));
     }
   };
+
+  const handleCropComplete = (crop, image) => {
+    // 处理裁剪后的头像，例如将裁剪后的图片上传
+    console.log("裁剪完成", crop, image);
+  };
+
   return (
     <>
       <Popup
@@ -74,6 +85,9 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
         >
           <List.Item
             clickable
+            onClick={() => {
+              setVisibleAvatarCrop(true);
+            }}
             extra={
               <div className="flex">
                 <img
@@ -88,7 +102,7 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
           </List.Item>
           <List.Item
             clickable
-            extra={user.userName || "无"}
+            extra={user.username || "无"}
             onClick={() => {
               setVisibleNickname(true);
             }}
@@ -124,7 +138,9 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
         visible={visibleNickname}
         showCloseButton
         onMaskClick={() => setVisibleNickname(false)}
-        onClose={() => setVisibleNickname(false)}
+        onClose={() => {
+          setVisibleNickname(false), setNewNickname("");
+        }}
         position="bottom"
         bodyStyle={{
           borderTopLeftRadius: "8px",
@@ -166,6 +182,32 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
         >
           保存
         </Button>
+      </Popup>
+
+      {/* 头像裁剪 */}
+      <Popup
+        visible={visibleAvatarCrop}
+        showCloseButton
+        onMaskClick={() => setVisibleAvatarCrop(false)}
+        onClose={() => {
+          setVisibleAvatarCrop(false);
+        }}
+        position="bottom"
+        bodyStyle={{
+          borderTopLeftRadius: "8px",
+          borderTopRightRadius: "8px",
+          height: "100vh",
+        }}
+      >
+        {/* <AutoCenter className="text-xl text-center mt-5 text-slate-950 select-none">
+          裁剪头像
+        </AutoCenter> */}
+        <AvatarCrop
+          // imageUrl="https://wall-lh.oss-cn-shenzhen.aliyuncs.com/2024-11-07/b3e00355-7056-4c0c-90d4-51896ebd0ec8.jpg"
+          imageUrl="https://gulimall-liheng.oss-cn-shenzhen.aliyuncs.com/2024-08-304027ea1d-cfe3-4b0f-8f2c-acc8c86400ed_1f15cdbcf9e1273c.jpg"
+          onCropComplete={handleCropComplete}
+          onCancel={() => setVisibleAvatarCrop(false)}
+        />
       </Popup>
 
       {/* 性别修改 */}
