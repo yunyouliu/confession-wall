@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-09 10:00:03
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-31 16:38:31
+ * @LastEditTime: 2025-02-06 16:19:50
  */
 import { React, useState, useMemo } from "react";
 import { Card, Popup, Button } from "antd-mobile";
@@ -144,7 +144,7 @@ const CommentItem = ({
         onMaskClick={() => setVisble(false)}
         onClose={() => setVisble(false)}
         bodyStyle={{
-          minHeight: "30vh",
+          minHeight: "20vh",
           borderTopLeftRadius: "8px",
           borderTopRightRadius: "8px",
         }}

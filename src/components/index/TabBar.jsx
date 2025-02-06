@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 13:04:40
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:20:16
+ * @LastEditTime: 2025-02-06 14:52:41
  */
 import { React, useState } from "react";
 import { Tabs, Button, Popup, Grid, AutoCenter, Dropdown } from "antd-mobile";
@@ -123,9 +123,8 @@ const TabBar = (img) => {
       </div>
       <Button
         fill="solid"
-        className={`absolute  ${
-          img.img?.length > 0 ? "top-[191px]" : "top-[43px]"
-        }  right-[10px]  h-[39px]`}
+        className={`absolute  ${img.img?.length > 0 ? "top-[195px]" : "top-[42px]"
+          }  right-[10px]  h-[39px]`}
         onClick={() => {
           setVisible(true);
         }}
@@ -161,11 +160,10 @@ const TabBar = (img) => {
               >
                 <div
                   // className=" bg-slate-200 h-[45px] m-0 leading-10 text-sm rounded-md"
-                  className={`${
-                    activKey == item.key
+                  className={`${activKey == item.key
                       ? "bg-emerald-200 text-emerald-500"
                       : "bg-slate-200"
-                  } h-[45px] m-0 leading-[48px] text-sm rounded-md`}
+                    } h-[45px] m-0 leading-[48px] text-sm rounded-md`}
                 >
                   <AutoCenter> {item.title}</AutoCenter>
                 </div>

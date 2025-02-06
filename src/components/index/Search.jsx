@@ -79,7 +79,7 @@ const Search = ({ query, change }) => {
           direction="end"
           content={data[currentIndex]?.text}
         />
-        <RightOutline className=" fixed mt-3 right-0 mr-5" />
+        {/* <RightOutline className="fixed mt-3 right-0 mr-5" /> */}
       </div>
     </div>
   );

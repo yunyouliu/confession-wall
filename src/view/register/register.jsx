@@ -17,7 +17,7 @@ const Register = () => {
     if (!email) {
       Toast.show({
         position: "center",
-        content: "请输入邮箱!",
+        content: "请输入邮箱",
       });
       return;
     }
@@ -27,7 +27,7 @@ const Register = () => {
     if (!emailRegex.test(email)) {
       Toast.show({
         position: "center",
-        content: "请输入正确的邮箱格式!",
+        content: "请输入正确的邮箱格式",
       });
       return;
     }
@@ -64,14 +64,14 @@ const Register = () => {
   const register = () => {
     if (!email || !password || !confirmPassword || !code) {
       Toast.show({
-        content: "信息不完整!",
+        content: "信息不完整",
       });
       return;
     }
 
     if (password !== confirmPassword) {
       Toast.show({
-        content: "两次输入的密码不一致!",
+        content: "两次输入的密码不一致",
       });
       return;
     }
@@ -106,12 +106,12 @@ const Register = () => {
   return (
     <div className="flex flex-col items-center justify-center select-none">
       <NavBar
-        className="bg-purple-700 w-full p-0 h-12 text-white"
+        className=" w-full p-0 h-12 "
         onBack={back}
       >
         注册
       </NavBar>
-      <div className="w-full max-w-sm p-2 mt-8 rounded-lg shadow-sm">
+      <div className="w-full max-w-sm p-4 mt-8 rounded-lg shadow-sm">
         <List>
           <List.Item
             prefix={
@@ -135,7 +135,7 @@ const Register = () => {
                 prefix={<MailOutline />} // 验证码输入框左侧图标
               />
               <Button
-                className="ml-2 bg-purple-500 text-white h-9"
+                className="ml-2 bg-blue-500 text-white h-9"
                 onClick={sendVerificationCode}
                 disabled={isSending || countdown > 0}
               >
@@ -162,7 +162,7 @@ const Register = () => {
         </List>
       </div>
 
-      <Button className="w-5/6 bg-purple-700 text-white " onClick={register}>
+      <Button className="w-11/12 bg-blue-500 text-white " onClick={register}>
         立即注册
       </Button>
 

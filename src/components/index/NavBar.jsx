@@ -1,24 +1,20 @@
 /*
- * @Descripttion:
+ * @Descripttion: 
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-09-04 13:03:47
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-12 18:25:33
+ * @LastEditTime: 2025-02-06 15:06:47
  */
 import React from "react";
 import { Image, Swiper, Toast } from "antd-mobile";
 import PropTypes from "prop-types";
 
-// const data = ["7.6万涉外学子", "45.18万帖子", "192.62万互动"];
-
-// const colors = ["#ace0ff", "#bcffbd", "#e4fabd", "#ffcfac"];
-
 const NavBar = ({ img, total }) => {
   // 轮播图数据
-  const items = img.img?.map((img, index) => (
+  const items = img?.map((item, index) => (
     <Swiper.Item key={index}>
-      <Image lazy src={img.img} alt={img} />
+      <Image lazy src={item.img} alt={item.img} />
     </Swiper.Item>
   ));
 
@@ -36,7 +32,7 @@ const NavBar = ({ img, total }) => {
         </div>
       </div>
 
-      {img.img?.length > 0 && (
+      {img?.length > 0 && (
         <Swiper
           loop
           autoplay

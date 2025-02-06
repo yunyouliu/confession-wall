@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-06 16:01:16
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-13 14:52:31
+ * @LastEditTime: 2025-02-06 14:41:04
  */
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -59,7 +59,6 @@ const EmojiSelector = ({
   const navigate = useNavigate();
 
   const ossAxios = axios.create({
-    // baseURL: "http://localhost:1112", // OSS 的基本 URL
     timeout: 5000, // 可根据需要设置超时时间
     headers: { "Content-Type": "multipart/form-data" },
     withCredentials: false,
@@ -137,6 +136,12 @@ const EmojiSelector = ({
         postData.top = top;
         postData.section = section;
       }
+      if (type === "1") {
+        if (!postData.content.text.trim()&&postData.content.img.length==0) {
+          Toast.show({ content: "请输入内容" });
+          return
+        }
+      }
       const { data } = await axios.post(
         `${type === "1" ? "wall/essay/save" : "wall/commentform/comments"}`,
         postData
@@ -152,7 +157,8 @@ const EmojiSelector = ({
         if (type === "1") {
           navigate("/index");
         } else {
-          //  更新本地数据
+          // 刷新页面
+            window.location.reload();
           return
         }
       } else {
@@ -322,9 +328,8 @@ const EmojiSelector = ({
             }}
           >
             <div
-              className={`w-[80px] h-[80px] bg-[#f5f5f5] p-2 mx-2 mt-3 justify-center items-center text-[#999999] ${
-                fileList.length > 0 ? "" : "hidden"
-              }`}
+              className={`w-[80px] h-[80px] bg-[#f5f5f5] p-2 mx-2 mt-3 justify-center items-center text-[#999999] ${fileList.length > 0 ? "" : "hidden"
+                }`}
             >
               <svg className="w-8 h-8 ml-4" aria-hidden="true">
                 <use xlinkHref="#icon-xiangji" />

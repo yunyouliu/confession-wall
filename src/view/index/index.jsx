@@ -1,12 +1,3 @@
-/*
- * @Descripttion:
- * @version: 1.0.0
- * @Author: yunyouliu
- * @Date: 2024-09-04 00:33:20
- * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-13 15:05:21
- */
-
 import { React, useState, useEffect, useCallback, useRef } from "react";
 import NavBar from "@/components/index/NavBar";
 import TabBar from "@/components/index/TabBar";
@@ -17,13 +8,6 @@ import { InfiniteScroll, Toast } from "antd-mobile";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import "../../App.css";
-
-const img = [
-  // "https://img.qiqi.pro/x/clzigc5up0x7k12tc78b2awdv.jpg?_s=1325x563",
-  // "https://img.qiqi.pro/x/clz9wfes90o9v12tc62s9ep1x.png?_s=1325x563",
-  // "https://img.qiqi.pro/x/clz72qvax0kcm12tcch4fa67z.png?_s=1325x563",
-  // "https://img.qiqi.pro/x/clz9wfes90o9v12tc62s9ep1x.png?_s=1325x563",
-];
 
 const Index = () => {
   const [data, setData] = useState([]);
@@ -41,7 +25,6 @@ const Index = () => {
 
     loadingRef.current = true; // 标记为正在加载
     Toast.show({ content: "加载中...", position: "bottom", duration: 500 });
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
       const response = await axios.get("/wall/essay/post/list", {
         params: {
@@ -68,13 +51,10 @@ const Index = () => {
 
       pageRef.current += 1; // 成功请求后再递增页码
     } catch (error) {
-      throw (
-        (new Error("mock request failed"),
-        Toast.show({
-          content: "加载失败：" + error.message,
-          position: "bottom",
-        }))
-      );
+      Toast.show({
+        content: "加载失败：" + error.message,
+        position: "bottom",
+      });
     } finally {
       loadingRef.current = false; // 加载完成后解锁
     }
@@ -94,15 +74,15 @@ const Index = () => {
 
   useEffect(() => {
     // 获取轮播图
-    const fechData=async()=>{
-      const [total,Carousel]=await Promise.all([
+    const fetchData = async () => {
+      const [total, Carousel] = await Promise.all([
         axios("/wall/user/seletetotal"),
         axios("/wall/carousel/carousel"),
       ]);
-      setTotal(total.data.data)
-      setCarousel(Carousel.data.data)
-    }
-    fechData()
+      setTotal(total.data.data);
+      setCarousel(Carousel.data.data);
+    };
+    fetchData();
   }, []);
 
   return (
@@ -125,12 +105,17 @@ const Index = () => {
           section={item.section}
         />
       ))}
-      {pageRef.current > 1 && (
-        <div className="h-9 -mr-2 -ml-2 mt-5 bg-slate-100 p-2 -mb-3 ">
+      <InfiniteScroll hasMore={hasMore} loadMore={loadMore} threshold={250} />
+
+      {/* 底部文字部分 */}
+      <div className="relative">
+        <div
+          className={`h-9 -mr-2 -ml-2 mt-5 bg-slate-100 p-2 -mb-3 ${data.length === 0 ? "fixed bottom-16 left-0 w-full" : ""}`}
+        >
           本服务由公众号 口袋青年 提供
         </div>
-      )}
-      <InfiniteScroll hasMore={hasMore} loadMore={loadMore} threshold={250} />
+      </div>
+
       <Footer />
     </div>
   );

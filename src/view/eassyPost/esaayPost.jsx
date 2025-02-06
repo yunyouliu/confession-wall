@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-10-14 14:47:43
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:13:01
+ * @LastEditTime: 2025-02-06 14:48:16
  */
 import { React, useState, useEffect } from "react";
 import EmojiSelector from "@/components/detail/emojiSelector";
@@ -174,17 +174,17 @@ const EassyPost = () => {
             <List.Item
               key={index}
               clickable={false}
+              style={{ "--border-bottom": "none", "--border-inner": "none" }}
               onClick={() => {
                 dispatch(setSection(index));
                 setVisible(false);
               }}
             >
               <div
-                className={`${
-                  index === section
+                className={`${index === section
                     ? "bg-emerald-500 text-white"
                     : "bg-gray-100"
-                } w-full h-13 p-3 text-center`}
+                  } w-full h-10 p-3 text-center`}
               >
                 {item.name}
               </div>

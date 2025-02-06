@@ -1,26 +1,20 @@
 /*
- * @Descripttion:
+ * @Descripttion: 
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-09-09 14:24:40
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-13 14:28:55
- */
-/*
- * @Descripttion:
- * @version: 1.0.0
- * @Author: yunyouliu
- * @Date: 2024-09-09 14:24:40
- * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:16:11
+ * @LastEditTime: 2024-11-20 19:08:28
  */
 import axios from "axios";
 import { store } from "@/redux/store";
 // import { changeloading } from "@/redux/flag";
 
+
 //   配置 axios 的 baseURL
 // axios.defaults.baseURL = "/api";
-axios.defaults.baseURL = "http://localhost:1112";
+// axios.defaults.baseURL = "http://http://47.120.37.116:1112";
+axios.defaults.baseURL=import.meta.env.VITE_URL
 
 axios.defaults.withCredentials = true;
 

@@ -4,10 +4,10 @@
  * @Author: yunyouliu
  * @Date: 2024-09-06 12:21:11
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:22:06
+ * @LastEditTime: 2024-11-16 21:18:53
  */
 import React, { Suspense, lazy } from "react";
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter,createHashRouter, Navigate } from "react-router-dom";
 // import { KeepAlive, AliveScope } from "react-activation";
 import WithAuth from "./withAuth";
 // 懒加载组件
@@ -106,6 +106,6 @@ const routes = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createHashRouter(routes);
 
 export default router;

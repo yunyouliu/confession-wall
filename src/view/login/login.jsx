@@ -18,15 +18,15 @@ import { setUser } from "@/redux/userSlice";
 import { setLikedItems } from "@/redux/commentSlice";
 import { initializeLikeStatus } from "@/api/api";
 
-const images = [
-  "https://ts3.cn.mm.bing.net/th?id=OSAAS.935FA71F2888C4433B53A47A7EB9115E&w=72&h=72&c=1&rs=1&r=0&o=6&dpr=1.4&pid=5.1",
-  "https://cdn.icon-icons.com/icons2/2108/PNG/96/google_icon_130924.png",
-  "https://cdn.icon-icons.com/icons2/1753/PNG/96/iconfinder-social-media-applications-6twitter-4102580_113802.png",
-];
+// const images = [
+//   "https://ts3.cn.mm.bing.net/th?id=OSAAS.935FA71F2888C4433B53A47A7EB9115E&w=72&h=72&c=1&rs=1&r=0&o=6&dpr=1.4&pid=5.1",
+//   "https://cdn.icon-icons.com/icons2/2108/PNG/96/google_icon_130924.png",
+//   "https://cdn.icon-icons.com/icons2/1753/PNG/96/iconfinder-social-media-applications-6twitter-4102580_113802.png",
+// ];
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("1");
-  const [password, setPassword] = useState("111111");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [visible, setVisible] = useState(false);
@@ -41,7 +41,7 @@ const LoginPage = () => {
   const handleChange = useCallback((captcha) => {
     // console.log("captcha:", captcha);
     setCaptcha(captcha);
-    setCode(captcha);
+    // setCode(captcha);
   }, []);
 
   const handleLogin = async () => {
@@ -91,9 +91,9 @@ const LoginPage = () => {
       style={{ backgroundSize: "cover" }}
     >
       <ParticleBackground />
-      <div className="w-full max-w-sm rounded-lg p-6 mt-[10px]">
+      <div className="w-full max-w-sm p-6  border border-gray-200 bg-white shadow-lg rounded-xl">
         <h1 className="text-3xl font-bold mb-9 text-center text-purple-900">
-          Inklek
+          校园墙
         </h1>
 
         {/* 用户名输入框 */}
@@ -147,23 +147,41 @@ const LoginPage = () => {
           block
           color="primary"
           className="rounded-lg"
-          size="large"
+          size="middle"
           onClick={handleLogin}
         >
           Login
         </Button>
-        <div className="text-center mt-7 mb-7 text-sm font-bold text-gray-500">
-          Forget Password
+        <div className="text-center mt-7 mb-7 float-left text-sm hover:underline hover:cursor-pointer text-gray-400">
+          忘记密码
         </div>
-        <div className="flex justify-center mt-2 gap-3">
+        {/* <div className="flex justify-center mt-2 gap-3">
           {images.map((src, index) => (
             <Image lazy src={src} width={40} height={40} key={index} />
           ))}
-        </div>
-        <div className="text-center mt-7 text-sm text-gray-500">
-          <Link to="/register">Don&apos;t have an account? Signup</Link>
+        </div> */}
+        <div className="text-center mt-7 text-sm text-gray-400 hover:underline float-right">
+          <Link to="/register">注册</Link>
         </div>
       </div>
+      {/* <div className="absolute bottom-0 left-0 right-0 p-4 text-center text-sm text-gray-500">
+        <div>© 2024 Inklek. All rights reserved.</div>
+        <div className="mt-2">
+          <img
+            width="25"
+            src="http://www.flawless.uno:55/wp-content/uploads/2024/11/国徽1024.png"
+            alt="国徽"
+            className="inline-block align-middle -mt-2"
+          />
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            className="hover:underline"
+          >
+            湘ICP备2024093272号-1
+          </a>
+        </div>
+      </div> */}
     </div>
   );
 };

@@ -14,7 +14,7 @@ export const initializeAuth = createAsyncThunk(
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          baseURL: "http://localhost:1112",
+          baseURL:import.meta.env.VITE_URL,
         });
         if (response.status !== 200) {
           throw new Error("Token validation failed");

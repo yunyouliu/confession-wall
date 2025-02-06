@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version: 1.0.0
+ * @Author: yunyouliu
+ * @Date: 2024-09-04 00:27:50
+ * @LastEditors: yunyouliu
+ * @LastEditTime: 2025-02-05 12:26:57
+ */
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { fileURLToPath, URL } from "url";
@@ -8,15 +16,7 @@ export default defineConfig({
   plugins: [react()],
   // 配置host 0.0.0.0
   server: {
-    // host: "0.0.0.0",
-    // 跨域
-    // proxy: {
-    //   "/api": {
-    //     target: "http://47.120.37.116/api",
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, ""),
-    //   },
-    // },
+    host: "0.0.0.0",
   },
   css: {
     postcss: {
@@ -32,7 +32,7 @@ export default defineConfig({
     },
   },
   base: "./",
-  build: {
-    // minify: false, // 关闭 Vite 默认的压缩，以便 obfuscator 插件生效
-  },
+  // build: {
+  //   minify: false, // 关闭 Vite 默认的压缩，以便 obfuscator 插件生效
+  // },
 });
