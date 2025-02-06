@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 00:27:50
  * @LastEditors: yunyouliu
- * @LastEditTime: 2025-02-05 12:26:57
+ * @LastEditTime: 2025-02-06 16:59:41
  */
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
@@ -15,9 +15,6 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   // 配置host 0.0.0.0
-  server: {
-    host: "0.0.0.0",
-  },
   css: {
     postcss: {
       plugins: [tailwindcss, autoprefixer],
