@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-10-16 18:52:11
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-11-13 15:31:54
+ * @LastEditTime: 2025-02-06 17:11:57
  */
 // UserPopup.jsx
 import { Popup, List, AutoCenter, Toast, Input, Button } from "antd-mobile";
@@ -15,6 +15,7 @@ import { updateUserInfo } from "@/api/api";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/userSlice";
 import AvatarCrop from "./AvatarCrop";
+import { useNavigate } from "react-router-dom";
 
 const UseInfo = ({ visible, onClose, user, onCopy }) => {
   const [visibleNickname, setVisibleNickname] = useState(false);
@@ -23,6 +24,7 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
   const [selectedGender, setSelectedGender] = useState(false); // 默认 false
   const [visibleAvatarCrop, setVisibleAvatarCrop] = useState(false); // 头像裁剪弹窗显示状态
   const [imageUrl, setImageUrl] = useState(null); // 选择的头像文件
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   // 当 user.sex 变化时同步更新 selectedGender
@@ -130,6 +132,14 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
           <List.Item clickable extra="0点券">
             点券
           </List.Item>
+          <List.Item clickable onClick={() => {
+            localStorage.clear()
+            dispatch(setUser({}))
+            Toast.show("注销成功")
+            navigate("/login")
+          }}>
+            注销
+          </List.Item>
         </List>
       </Popup>
 
@@ -229,9 +239,8 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
 
         <div className="flex flex-row mt-6 m-auto gap-8 select-none">
           <div
-            className={`rounded-full w-16 h-16 p-3 ml-[100px] ${
-              selectedGender ? "bg-sky-400" : "bg-gray-200"
-            }`}
+            className={`rounded-full w-16 h-16 p-3 ml-[100px] ${selectedGender ? "bg-sky-400" : "bg-gray-200"
+              }`}
             onClick={() => setSelectedGender(true)}
           >
             <svg className="w-5 h-5 ml-2 " aria-hidden="true">
@@ -240,9 +249,8 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
             <span className="ml-2 text-white text-lg">男</span>
           </div>
           <div
-            className={`rounded-full w-16 h-16 p-3 ${
-              !selectedGender ? "bg-pink-400" : "bg-gray-200"
-            }`}
+            className={`rounded-full w-16 h-16 p-3 ${!selectedGender ? "bg-pink-400" : "bg-gray-200"
+              }`}
             onClick={() => setSelectedGender(false)}
           >
             <svg className="w-5 h-5 ml-2" aria-hidden="true">

@@ -27,31 +27,31 @@
 * **用户管理**
   * 注册与登录（基于 JWT 实现的认证）
 
-![](.\image\REAMED\QQ截图20250206162630.png)
+![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206162630.png)
 
-![](.\image\REAMED\QQ截图20250206162640.png)
+![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206162640.png)
 
 * 用户信息查看与修改
 
-![](.\image\REAMED\QQ截图20250206162607.png)
+![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206162607.png)
 
 * 用户发布内容（文本、图片等）
 
-  ![](.\image\REAMED\QQ截图20250206162554.png)
+  ![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206162554.png)
 * **内容互动**
 
   * 发布、点赞、评论动态
 
-    ![](.\image\REAMED\QQ截图20250206164625.png)
+    ![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206164625.png)
   * 点赞后，改变颜色
 
-    ![](.\image\REAMED\QQ截图20250206161417.png)
+    ![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206161417.png)
   * 回复评论及查看评论详情
 
-    ![](.\image\REAMED\QQ截图20250206162016.png)
+    ![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206162016.png)
   * 内容展开和收起
 
-    ![](.\image\REAMED\QQ截图20250206164656.png)
+    ![](https://raw.githubusercontent.com/yunyouliu/confession-wall/refs/heads/main/image/REAMED/QQ%E6%88%AA%E5%9B%BE20250206164656.png)
 * **实时数据**
 
   * 使用 Redis 存储缓存数据，提升响应速度
