@@ -137,7 +137,7 @@ const EmojiSelector = ({
         postData.section = section;
       }
       if (type === "1") {
-        if (!postData.content.text.trim()&&postData.content.img.length==0) {
+        if (!postData.content.text.trim() && postData.content.img.length == 0) {
           Toast.show({ content: "请输入内容" });
           return
         }
@@ -158,7 +158,7 @@ const EmojiSelector = ({
           navigate("/index");
         } else {
           // 刷新页面
-            window.location.reload();
+          window.location.reload();
           return
         }
       } else {

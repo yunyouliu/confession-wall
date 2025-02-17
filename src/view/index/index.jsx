@@ -110,7 +110,7 @@ const Index = () => {
       {/* 底部文字部分 */}
       <div className="relative">
         <div
-          className={`h-9 -mr-2 -ml-2 mt-5 bg-slate-100 p-2 -mb-3 ${data.length === 0 ? "fixed bottom-16 left-0 w-full" : ""}`}
+          className={`h-9 -mr-2 -ml-2 mt-5 bg-slate-100 p-2 -mb-3 ${data.length === 0 ? "fixed bottom-14 left-0 w-full" : ""}`}
         >
           本服务由公众号 口袋青年 提供
         </div>

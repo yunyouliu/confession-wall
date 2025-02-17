@@ -13,6 +13,10 @@ const Register = () => {
   const [isSending, setIsSending] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const navigate = useNavigate();
+
+  // console.log(MD5(123456 + "😢").toString())
+  
+
   const sendVerificationCode = () => {
     if (!email) {
       Toast.show({
@@ -75,7 +79,7 @@ const Register = () => {
       });
       return;
     }
-
+    
     // 注册请求  /wall/register
     axios
       .post("/wall/register", {

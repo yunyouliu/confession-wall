@@ -1,0 +1,24 @@
+{
+    "name": "校园墙",
+    "short_name": "校园墙",
+    "description": "校园墙 PWA 应用",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    
+      "icons": [
+        {
+          "src": "/mihayou-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/mihayou-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    
+  }

@@ -13,16 +13,11 @@ import ParticleBackground from "../../utils/ParticleBackground";
 import MD5 from "crypto-js/md5";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/userSlice";
 import { setLikedItems } from "@/redux/commentSlice";
 import { initializeLikeStatus } from "@/api/api";
-
-// const images = [
-//   "https://ts3.cn.mm.bing.net/th?id=OSAAS.935FA71F2888C4433B53A47A7EB9115E&w=72&h=72&c=1&rs=1&r=0&o=6&dpr=1.4&pid=5.1",
-//   "https://cdn.icon-icons.com/icons2/2108/PNG/96/google_icon_130924.png",
-//   "https://cdn.icon-icons.com/icons2/1753/PNG/96/iconfinder-social-media-applications-6twitter-4102580_113802.png",
-// ];
+import { useEffect } from "react";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -33,6 +28,15 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const captchaRef = useRef();
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token"); // 从 localStorage 获取 token
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // 从 Redux 获取登录状态
+  // 如果已登录就跳转到首页
+  useEffect(() => {
+    if (isLoggedIn) {
+      Toast.show({ content: "您已登录" });
+      navigate("/index");
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleClick = () => {
     captchaRef.current.refresh(); // 刷新验证码

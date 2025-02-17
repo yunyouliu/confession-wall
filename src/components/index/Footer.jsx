@@ -1,10 +1,10 @@
 /*
- * @Descripttion:
+ * @Descripttion: 
  * @version: 1.0.0
  * @Author: yunyouliu
  * @Date: 2024-09-04 20:33:01
  * @LastEditors: yunyouliu
- * @LastEditTime: 2025-02-06 16:08:38
+ * @LastEditTime: 2025-02-07 12:54:51
  */
 import { React, useState, useEffect } from "react";
 import { TabBar, Toast, Mask, Image } from "antd-mobile";
@@ -93,7 +93,7 @@ const Footer = () => {
       {/* 底部导航栏 */}
       <TabBar
         activeKey={activeKey}
-        className="fixed bottom-1 left-0 right-0 bg-white overflow-hidden select-none"
+        className="fixed bottom-0 left-0 right-0 bg-white overflow-hidden select-none"
         onChange={(value) => {
           if (value === "/user") {
             setVisible1(true);
