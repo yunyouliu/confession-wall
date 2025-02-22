@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-04 20:33:01
  * @LastEditors: yunyouliu
- * @LastEditTime: 2025-02-07 12:54:51
+ * @LastEditTime: 2025-02-22 17:40:15
  */
 import { React, useState, useEffect } from "react";
 import { TabBar, Toast, Mask, Image } from "antd-mobile";
@@ -68,7 +68,8 @@ const Footer = () => {
     // 复制文本到剪贴板
     navigator.clipboard
       .writeText(user.id)
-      .then(Toast.show("你的ID已复制到剪切板"));
+      .then(Toast.show("你的ID已复制到剪切板"))
+      .catch(() => Toast.show("复制失败"));
   };
 
   // 处理跳转
