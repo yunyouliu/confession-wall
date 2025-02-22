@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-09 14:24:40
  * @LastEditors: yunyouliu
- * @LastEditTime: 2025-02-22 17:37:10
+ * @LastEditTime: 2025-02-22 18:01:14
  */
 import axios from "axios";
 import { store } from "@/redux/store";
@@ -22,9 +22,6 @@ axios.defaults.validateStatus = function (status) {
   return status >= 200 && status < 300;
 };
 
-// 存储待重试的请求队列
-const pendingRequests = [];
-
 // 请求拦截器
 axios.interceptors.request.use(
   function (config) {
@@ -33,20 +30,6 @@ axios.interceptors.request.use(
 
     // 在发送请求之前，开启 loading
     // dispatch(changeloading(true));
-
-    // 检查网络状态
-    if (!navigator.onLine) {
-      // 将请求配置和取消控制器存入队列
-      const controller = new AbortController();
-      config.signal = controller.signal;
-      pendingRequests.push({ config, controller });
-
-      // 返回一个自定义错误（避免进入响应拦截器）
-      return Promise.reject({
-        code: "OFFLINE",
-        message: "网络已断开，请求被缓存",
-      });
-    }
 
     // 在发送请求之前，配置 JWT 请求头
     if (localStorage.getItem("token")) {
@@ -79,25 +62,29 @@ axios.interceptors.response.use(
     // 如果响应出错，关闭 loading
     // dispatch(changeloading(false));
 
-    // 如果是离线错误，直接返回
-    if (error.code === "OFFLINE") {
-      return Promise.reject(error);
+    // 根据错误类型显示提示
+    if (error.message === "Network Error") {
+      // 网络错误（如离线）
+      Toast.show({
+        content: "网络连接失败，请检查网络",
+        position: "bottom",
+      });
+    } else if (error.response) {
+      // 服务器返回的错误（如 4xx、5xx）
+      Toast.show({
+        content: `请求失败：${error.response.data.message || "服务器错误"}`,
+        position: "bottom",
+      });
+    } else {
+      // 其他错误
+      Toast.show({
+        content: "请求失败：" + error.message,
+        position: "bottom",
+      });
     }
 
-    // 其他错误处理
     return Promise.reject(error);
   }
 );
-
-// 监听网络恢复事件
-window.addEventListener("online", () => {
-  while (pendingRequests.length > 0) {
-    const { config, controller } = pendingRequests.shift();
-    // 取消之前的请求（避免冲突）
-    controller.abort();
-    // 重新发送请求
-    axios.request(config);
-  }
-});
 
 export default axios;

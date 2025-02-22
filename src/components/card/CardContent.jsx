@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-09-05 20:51:14
  * @LastEditors: yunyouliu
- * @LastEditTime: 2024-10-27 00:17:27
+ * @LastEditTime: 2025-02-22 19:22:22
  */
 // src/CardContent.jsx
 
@@ -32,7 +32,7 @@ const CardContent = ({ text, id, onclick }) => {
       case 3:
         return "flex flex-row justify-between";
       default:
-        return "flex flex-wrap justify-between";
+        return "flex flex-wrap";
     }
   };
 
@@ -51,8 +51,16 @@ const CardContent = ({ text, id, onclick }) => {
         objectFit: "contain", // 完整展示
       };
     }
+    if (imgLength === 2 || imgLength === 4) {
+      return {
+        width: "48%", // 两张一行时更宽
+        height: "200px", // 缩略图高度
+        objectFit: "cover", // 裁剪以充满容器
+        objectPosition: "cover", // 以中心裁剪
+      };
+    }
     return {
-      width: imgLength % 2 === 0 ? "48%" : "32%", // 两张一行时更宽
+      width: "32%", // 多于4张时三张一行
       height: "200px", // 缩略图高度
       objectFit: "cover", // 裁剪以充满容器
       objectPosition: "center", // 以中心裁剪
@@ -110,9 +118,8 @@ const CardContent = ({ text, id, onclick }) => {
     <div className="text-left mt-2 indent-[20px] text-white text-base">
       <div
         ref={contentRef}
-        className={`overflow-hidden transition-all ${
-          isExpanded ? "max-h-none" : "max-h-[187px]"
-        }`}
+        className={`overflow-hidden transition-all ${isExpanded ? "max-h-none" : "max-h-[187px]"
+          }`}
         // 由外部传递的 onclick 控制点击事件
         // 如果有传递id，则使用传递的 onclick，否则不执行任何操作
         onClick={onclick ? () => onclick(id) : undefined}
@@ -184,34 +191,34 @@ const CardContent = ({ text, id, onclick }) => {
 
         // 方案三 缩略图
         <div className="text-left mt-2 indent-[20px] text-white text-base">
-        {text.img && text.img.length > 0 && (
-          <div
-            className="mt-2 p-2 flex flex-wrap justify-between gap-2"
-            style={{ rowGap: "12px" }} // 控制行间距
-          >
-            {text.img.map((item, idx) => (
-              <div
-                key={idx}
-                className="overflow-hidden rounded-lg"
-                style={{
-                  ...getImageStyle(text.img.length), // 根据图片数量动态调整
-                }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  showImages(idx); // 点击展示大图
-                }}
-              >
-                <Image
-                  lazy
-                  src={item}
-                  alt="图片"
-                  className="w-full h-full" // 填满容器
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+          {text.img && text.img.length > 0 && (
+            <div
+              className="mt-2 p-2 flex flex-wrap justify-start gap-1 "
+              style={{ rowGap: "12px" }} // 控制行间距
+            >
+              {text.img.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="overflow-hidden rounded-lg"
+                  style={{
+                    ...getImageStyle(text.img.length), // 根据图片数量动态调整
+                  }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    showImages(idx); // 点击展示大图
+                  }}
+                >
+                  <Image
+                    lazy
+                    src={item}
+                    alt="图片"
+                    className="w-full h-full" // 填满容器
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         // 方案四
         // <div className={`mt-2 p-2 ${getFlexClasses(text.img.length)}`}>

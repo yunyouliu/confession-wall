@@ -4,7 +4,7 @@
  * @Author: yunyouliu
  * @Date: 2024-10-16 18:52:11
  * @LastEditors: yunyouliu
- * @LastEditTime: 2025-02-06 17:11:57
+ * @LastEditTime: 2025-02-22 19:36:41
  */
 // UserPopup.jsx
 import { Popup, List, AutoCenter, Toast, Input, Button } from "antd-mobile";
@@ -115,35 +115,40 @@ const UseInfo = ({ visible, onClose, user, onCopy }) => {
             clickable
             extra={user.sex === "male" ? "男" : "女"}
             onClick={() => {
-              setVisibleGender(true);
-            }}
-          >
-            性别
-          </List.Item>
-          <List.Item clickable extra={user.phoneNumber || "无"}>
-            手机号
-          </List.Item>
-          <List.Item clickable extra="暂未认证，去认证">
-            身份认证
-          </List.Item>
-          <List.Item clickable extra={user.id || "无"} onClick={onCopy}>
-            ID
-          </List.Item>
-          <List.Item clickable extra="0点券">
-            点券
-          </List.Item>
-          <List.Item clickable onClick={() => {
-            localStorage.clear()
-            dispatch(setUser({}))
-            Toast.show("注销成功")
-            navigate("/login")
-          }}>
-            注销
-          </List.Item>
-        </List>
-      </Popup>
+                setVisibleGender(true);
+              }}
+              >
+              性别
+              </List.Item>
+              <List.Item clickable extra={user.phoneNumber || "无"}>
+              手机号
+              </List.Item>
+              <List.Item clickable extra="暂未认证，去认证">
+              身份认证
+              </List.Item>
+              <List.Item clickable extra={user.id || "无"} onClick={onCopy}>
+              ID
+              </List.Item>
+              <List.Item clickable extra="0点券">
+              点券
+              </List.Item>
+              <List.Item
+              clickable
+              onClick={() => {
+                localStorage.clear();
+                dispatch(setUser({}));
+                Toast.show("注销成功");
+                setTimeout(() => {
+                navigate("/login");
+                }, 1000);
+              }}
+              >
+              注销
+              </List.Item>
+            </List>
+            </Popup>
 
-      {/* 昵称修改 */}
+            {/* 昵称修改 */}
       <Popup
         visible={visibleNickname}
         showCloseButton

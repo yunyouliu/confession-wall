@@ -13,7 +13,7 @@ const Index = () => {
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [Carousel, setCarousel] = useState([]); // 轮播图
-  const [total, setTotal] = useState([]) // 总数
+  const [total, setTotal] = useState([]); // 总数
   const [query, setQuery] = useState("");
   const loadingRef = useRef(false); // 用 ref 管理 loading 状态
   const pageRef = useRef(1); // 页码 ref 避免异步问题
@@ -51,10 +51,18 @@ const Index = () => {
 
       pageRef.current += 1; // 成功请求后再递增页码
     } catch (error) {
-      Toast.show({
-        content: "加载失败：" + error.message,
-        position: "bottom",
-      });
+      // 根据错误类型显示提示
+      if (error.message === "Network Error") {
+        Toast.show({
+          content: "网络连接失败，请检查网络",
+          position: "bottom",
+        });
+      } else {
+        Toast.show({
+          content: "加载失败：" + error.message,
+          position: "bottom",
+        });
+      }
     } finally {
       loadingRef.current = false; // 加载完成后解锁
     }
@@ -83,6 +91,30 @@ const Index = () => {
       setCarousel(Carousel.data.data);
     };
     fetchData();
+  }, []);
+
+  // 监听网络状态变化（仅用于 UI 提示）
+  useEffect(() => {
+    const handleOnline = () => {
+      Toast.show({
+        content: "网络已恢复",
+        position: "bottom",
+      });
+    };
+
+    const handleOffline = () => {
+      Toast.show({
+        content: "网络已断开，正在使用离线缓存",
+        position: "bottom",
+      });
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
   }, []);
 
   return (

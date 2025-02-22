@@ -32,7 +32,7 @@ const LoginPage = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // 从 Redux 获取登录状态
   // 如果已登录就跳转到首页
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && token) {
       Toast.show({ content: "您已登录" });
       navigate("/index");
     }
